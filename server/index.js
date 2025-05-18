@@ -1,6 +1,8 @@
 const http = require('http');
 const sqlite3 = require('sqlite3').verbose();
 const url = require('url');
+const bcrypt = require('bcrypt');
+const SALT_ROUNDS = 10;
 
 const db = new sqlite3.Database('./database.db', (err) => {
   if (err) {
@@ -44,30 +46,42 @@ if (req.method === 'OPTIONS') {
     const data = JSON.parse(body);
     const { username, parola } = data;
 
-    db.get('SELECT * FROM utilizatori WHERE username = ? AND parola = ?', [username, parola], (err, user) => {
-      if (err) {
-        res.writeHead(500, {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        });
-        res.end(JSON.stringify({ succes: false, mesaj: 'Eroare server' }));
-        return;
-      }
-
-      if (user) {
-        res.writeHead(200, {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        });
-        res.end(JSON.stringify({ succes: true }));
-      } else {
-        res.writeHead(401, {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        });
-        res.end(JSON.stringify({ succes: false }));
-      }
+    db.get('SELECT * FROM utilizatori WHERE username = ?', [username], (err, user) => {
+  if (err) {
+    res.writeHead(500, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
     });
+    res.end(JSON.stringify({ succes: false, mesaj: 'Eroare server' }));
+    return;
+  }
+
+  if (!user) {
+    res.writeHead(401, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    });
+    res.end(JSON.stringify({ succes: false, mesaj: 'User inexistent' }));
+    return;
+  }
+
+  bcrypt.compare(parola, user.parola, (err, rezultat) => {
+    if (rezultat) {
+      res.writeHead(200, {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      });
+      res.end(JSON.stringify({ succes: true }));
+    } else {
+      res.writeHead(401, {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      });
+      res.end(JSON.stringify({ succes: false, mesaj: 'Parolă greșită' }));
+    }
+  });
+});
+
   });
 }
 
@@ -78,22 +92,34 @@ else if (req.method === 'POST' && parsedUrl.pathname === '/api/register') {
     const data = JSON.parse(body);
     const { username, parola } = data;
 
-    db.run('INSERT INTO utilizatori (username, parola) VALUES (?, ?)', [username, parola], function (err) {
-      if (err) {
-        res.writeHead(400, {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        });
-        res.end(JSON.stringify({ succes: false, mesaj: 'Utilizatorul există deja sau eroare.' }));
-        return;
-      }
+    bcrypt.hash(parola, SALT_ROUNDS, (err, hash) => {
+  if (err) {
+    res.writeHead(500, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    });
+    res.end(JSON.stringify({ succes: false, mesaj: 'Eroare la criptare parolă' }));
+    return;
+  }
 
-      res.writeHead(201, {
+  db.run('INSERT INTO utilizatori (username, parola) VALUES (?, ?)', [username, hash], function (err) {
+    if (err) {
+      res.writeHead(400, {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       });
-      res.end(JSON.stringify({ succes: true }));
+      res.end(JSON.stringify({ succes: false, mesaj: 'Utilizatorul există deja sau eroare.' }));
+      return;
+    }
+
+    res.writeHead(201, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
     });
+    res.end(JSON.stringify({ succes: true }));
+  });
+});
+
   });
 }
 
