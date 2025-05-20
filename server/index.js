@@ -123,6 +123,43 @@ else if (req.method === 'POST' && parsedUrl.pathname === '/api/register') {
   });
 }
 
+else if (req.method === 'POST' && parsedUrl.pathname === '/api/forgot') {
+  let body = '';
+  req.on('data', chunk => body += chunk);
+  req.on('end', () => {
+    const data = JSON.parse(body);
+    const { username, parolaNoua } = data;
+
+    bcrypt.hash(parolaNoua, SALT_ROUNDS, (err, hashNou) => {
+      if (err) {
+        res.writeHead(500, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        });
+        res.end(JSON.stringify({ succes: false, mesaj: 'Eroare la criptare parolă' }));
+        return;
+      }
+
+      db.run('UPDATE utilizatori SET parola = ? WHERE username = ?', [hashNou, username], function (err) {
+        if (err || this.changes === 0) {
+          res.writeHead(400, {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          });
+          res.end(JSON.stringify({ succes: false, mesaj: 'Utilizator inexistent sau eroare' }));
+          return;
+        }
+
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        });
+        res.end(JSON.stringify({ succes: true }));
+      });
+    });
+  });
+}
+
   else {
     res.writeHead(404, { 'Content-Type': 'text/plain' });
     res.end('404 Not Found');
