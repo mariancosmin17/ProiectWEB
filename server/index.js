@@ -57,6 +57,12 @@ if (req.method === 'OPTIONS') {
       return;
     }
 
+    if (decoded.role === 'guest' && req.method !== 'GET') {
+    res.writeHead(403, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ mesaj: 'Doar citire pentru vizitatori' }));
+    return;
+  }
+  
     // Token valid – deci returnăm datele
     db.all('SELECT * FROM abrevieri', [], (err, rows) => {
       if (err) {
@@ -159,7 +165,7 @@ else if (req.method === 'POST' && parsedUrl.pathname === '/api/register') {
   req.on('data', chunk => body += chunk);
   req.on('end', () => {
     const data = JSON.parse(body);
-    const { username, parola } = data;
+    const { username,email, parola } = data;
 
     bcrypt.hash(parola, SALT_ROUNDS, (err, hash) => {
   if (err) {
@@ -174,7 +180,7 @@ else if (req.method === 'POST' && parsedUrl.pathname === '/api/register') {
     return;
   }
 
-  db.run('INSERT INTO utilizatori (username, parola) VALUES (?, ?)', [username, hash], function (err) {
+  db.run('INSERT INTO utilizatori (username,email, parola) VALUES (?,?, ?)', [username,email, hash], function (err) {
     if (err) {
       
       res.writeHead(400, {
@@ -243,6 +249,22 @@ else if (req.method === 'POST' && parsedUrl.pathname === '/api/forgot') {
       });
     });
   });
+}
+
+else if (req.method === 'POST' && parsedUrl.pathname === '/api/login-guest') {
+  const guestToken = jwt.sign(
+    { username: 'vizitator', role: 'guest' },
+    SECRET_KEY,
+    { expiresIn: '1h' }
+  );
+
+  res.writeHead(200, {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+  });
+  res.end(JSON.stringify({ succes: true, token: guestToken }));
 }
 
   else {
