@@ -180,7 +180,7 @@ else if (req.method === 'POST' && parsedUrl.pathname === '/api/register') {
     return;
   }
 
-  db.run('INSERT INTO utilizatori (username,email, parola) VALUES (?,?, ?)', [username,email, hash], function (err) {
+  db.run('INSERT INTO utilizatori (username,email, parola,rol) VALUES (?,?, ?,?)', [username,email, hash,'user'], function (err) {
     if (err) {
       
       res.writeHead(400, {
