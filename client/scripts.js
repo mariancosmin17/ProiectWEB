@@ -86,7 +86,7 @@ if (forgotForm) {
     const parolaNoua = document.getElementById('newPassword').value;
 
     if (!parolaValida(parolaNoua)) {
-  const mesaj = document.getElementById('fMesaj');
+  const mesaj = document.getElementById('forgotMesaj');
   mesaj.textContent = 'Parola trebuie să aibă cel puțin 6 caractere, o literă mare și o cifră.';
   mesaj.style.color = 'red';
   return;
