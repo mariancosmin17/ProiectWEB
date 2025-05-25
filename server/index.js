@@ -9,22 +9,18 @@ const { handleAuthRoutes } = require('./routes/auth');
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   
-  // Verifică dacă este o cerere CORS OPTIONS
   if (handleCorsOptions(req, res)) {
     return;
   }
 
-  // Încearcă să gestioneze rute de abrevieri
   if (handleAbrevieriRoutes(req, res, parsedUrl)) {
     return;
   }
   
-  // Încearcă să gestioneze rute de autentificare
   if (handleAuthRoutes(req, res, parsedUrl)) {
     return;
   }
 
-  // Dacă nu s-a găsit nicio rută potrivită
   res.writeHead(404, {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
