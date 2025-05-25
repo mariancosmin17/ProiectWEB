@@ -2,20 +2,223 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
+  <style>
+    /* Embedding the CSS directly in each file to avoid path issues */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0039a6 0%, #00BFFF 100%);
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      display: flex;
+      width: 800px;
+      height: 500px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .login-section {
+      flex: 1;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px 0 0 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-section {
+      width: 40%;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 0 20px 20px 0;
+    }
+
+    h2 {
+      color: #0039a6;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #0039a6;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d1d1;
+      border-radius: 5px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: #0039a6;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to right, #0039a6, #00BFFF);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+      transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(to right, #00BFFF, #0039a6);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-text {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .info-text a {
+      color: #0039a6;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .info-text a:hover {
+      color: #00BFFF;
+      text-decoration: underline;
+    }
+
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      color: #f44336;
+      font-size: 14px;
+    }
+
+    .icon-container {
+      width: 80px;
+      height: 80px;
+      background: rgba(0, 191, 255, 0.1);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .icon-container i {
+      font-size: 35px;
+      color: #00BFFF;
+    }
+
+    .brand-section h3 {
+      color: #0039a6;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .card {
+        flex-direction: column;
+        width: 90%;
+        height: auto;
+      }
+      
+      .login-section {
+        width: 100%;
+        border-radius: 20px 20px 0 0;
+      }
+      
+      .brand-section {
+        width: 100%;
+        padding: 30px 0;
+        border-radius: 0 0 20px 20px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
   <script defer src="scripts.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const token = localStorage.getItem('jwt');
+      if (token) {
+        window.location.href = 'dashboard.html';
+      }
+    });
+  </script>
 </head>
 <body>
-  <h2>Autentificare</h2>
-  <form id="loginForm">
-    <label for="username">Username:</label>
-    <input type="text" id="username" required><br><br>
-
-    <label for="parola">Parolă:</label>
-    <input type="password" id="parola" required><br><br>
-
-    <button type="submit">Login</button>
-  </form>
-  <p id="mesaj"></p>
+  <div class="container">
+    <div class="card">
+      <div class="login-section">
+        <h2>LOGIN</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="username">USERNAME:</label>
+            <input type="text" id="username" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="parola">PASSWORD:</label>
+            <input type="password" id="parola" required>
+          </div>
+          
+          <button type="submit" class="btn-primary">SIGN IN</button>
+        </form>
+        <p class="info-text">Don't have an account? <a href="register.html">Register here</a></p>
+        <p class="info-text"><a href="forgot.html">Forgot password?</a></p>
+        <p class="info-text"><a href="#" id="continuaVizitator">Continue as guest</a></p>
+        <p id="mesaj" class="message"></p>
+      </div>
+      <div class="brand-section">
+        <div class="icon-container">
+          <i class="fas fa-lock"></i>
+        </div>
+        <h3>APlace</h3>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
