@@ -16,16 +16,42 @@ function parseJwt(token) {
   }
 }
 
+function isValidToken(token) {
+  if (!token) return false;
+  
+  try {
+    const decoded = parseJwt(token);
+    if (!decoded) return false;
+    
+    const currentTime = Date.now() / 1000;
+    if (decoded.exp && decoded.exp < currentTime) {
+      console.log("Token expirat");
+      return false;
+    }
+    
+    return true;
+  } catch (e) {
+    console.error("Eroare la verificarea token-ului:", e);
+    return false;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const token = localStorage.getItem('jwt');
+
+  if (!isValidToken(token)) {
+    console.log("Token invalid sau lipsă, redirecționez către login");
+    localStorage.removeItem('jwt'); // Elimină token-ul invalid dacă există
+    window.location.href = 'login.html';
+    return; // Oprește execuția funcției aici
+  }
+
   const parsed = token ? parseJwt(token) : null;
   const isGuest = parsed?.role === 'guest';
 
-  // Verificăm imediat dacă utilizatorul este vizitator și înlocuim conținutul secțiunii Add
   if (isGuest) {
     const addSection = document.getElementById('add-section');
     if (addSection) {
-      // HTML pentru mesajul de vizitator - mai simplu și direct
       addSection.innerHTML = `
         <div class="guest-message">
           <div class="lock-icon">
@@ -39,12 +65,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
       `;
       
-      // Adăugăm event listener pentru butonul de autentificare
       const loginButton = document.getElementById('redirectLogin');
       if (loginButton) {
         loginButton.addEventListener('click', function() {
-          localStorage.removeItem('jwt'); // Șterge token-ul
-          window.location.href = 'login.html'; // Redirecționează
+          localStorage.removeItem('jwt');
+          window.location.href = 'login.html';
         });
       }
     }
@@ -56,6 +81,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   try {
+    const abrevieriTitle = document.querySelector('.abbreviations-section h3');
+    if (abrevieriTitle) {
+      if (isGuest || parsed?.role === 'admin') {
+        abrevieriTitle.textContent = 'Toate Abrevierile';
+      } else {
+        abrevieriTitle.textContent = 'Abrevierile Tale';
+      }
+    }
+
     const raspuns = await fetch('http://localhost:8080/api/abrevieri', {
       method: 'GET',
       headers: headers
@@ -63,29 +97,39 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!raspuns.ok) {
       console.warn('⚠️ Token invalid sau lipsă – continuăm ca vizitator');
+      localStorage.removeItem('jwt');
+      window.location.href = 'login.html';
+      return;
     }
 
     const abrevieri = await raspuns.json();
     const lista = document.getElementById('listaAbrevieri');
     
     if (lista) {
-      lista.classList.remove('loading'); // Eliminăm clasa loading
+      lista.classList.remove('loading');
       lista.innerHTML = '';
       
       if (abrevieri.length === 0) {
         const liEmpty = document.createElement('li');
-        liEmpty.textContent = 'Nu există abrevieri. Adaugă una nouă!';
+        if (isGuest) {
+          liEmpty.textContent = 'Nu există abrevieri disponibile.';
+        } else {
+          liEmpty.textContent = 'Nu ai adăugat încă nicio abreviere. Adaugă una acum!';
+        }
         lista.appendChild(liEmpty);
       } else {
         abrevieri.forEach(entry => {
           const li = document.createElement('li');
-          li.textContent = `${entry.abreviere} = ${entry.semnificatie} (${entry.limba}, ${entry.domeniu})`;
+          if (isGuest || parsed?.role === 'admin') {
+            li.textContent = `${entry.abreviere} = ${entry.semnificatie} (${entry.limba}, ${entry.domeniu}) - Adăugat de: ${entry.autor || 'necunoscut'}`;
+          } else {
+            li.textContent = `${entry.abreviere} = ${entry.semnificatie} (${entry.limba}, ${entry.domeniu})`;
+          }
           lista.appendChild(li);
         });
       }
     }
     
-    // Actualizează statisticile
     const totalElement = document.getElementById('total-abbreviations');
     const categoriesElement = document.getElementById('total-categories');
     const coverageElement = document.getElementById('coverage-percentage');
@@ -102,7 +146,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       coverageElement.textContent = `${acoperire}%`;
     }
 
-    // Configurează butonul de autentificare
     const authButtonsContainer = document.getElementById('auth-buttons');
     if (authButtonsContainer) {
       authButtonsContainer.innerHTML = '';
@@ -123,7 +166,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
 
-    // Configurează formularul de adăugare doar pentru utilizatori autentificați
     if (!isGuest) {
       const formAdd = document.getElementById('addForm');
       if (formAdd) {
@@ -177,9 +219,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     
   } catch (err) {
     console.error('❌ Eroare la încărcarea abrevierilor:', err);
+    localStorage.removeItem('jwt');
+    window.location.href = 'login.html';
+    return;
   }
+
+  setInterval(() => {
+  const token = localStorage.getItem('jwt');
+  if (!isValidToken(token) && window.location.pathname.includes('dashboard.html')) {
+    console.log("Token expirat sau invalid, redirecționez către login");
+    localStorage.removeItem('jwt');
+    window.location.href = 'login.html';
+  }
+}, 30000);
   
-  // Configurează navigația între secțiuni
   const navLinks = document.querySelectorAll('.nav-link');
   navLinks.forEach(link => {
     link.addEventListener('click', function(e) {

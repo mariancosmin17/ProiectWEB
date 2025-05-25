@@ -32,7 +32,14 @@ function handleLogin(req, res) {
         }
 
         if (rezultat) {
-          const token = jwt.sign({ username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+          const token = jwt.sign(
+            { 
+              username: user.username,
+              role: user.rol || 'user'
+            }, 
+            SECRET_KEY, 
+            { expiresIn: '1h' }
+          );
 
           res.writeHead(200, getCorsHeaders());
           res.end(JSON.stringify({ succes: true, token }));

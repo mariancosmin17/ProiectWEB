@@ -19,10 +19,8 @@ function verifyToken(req, res, callback) {
       return;
     }
 
-    if (decoded.role === 'guest' && req.method !== 'GET') {
-      res.writeHead(403, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ mesaj: 'Doar citire pentru vizitatori' }));
-      return;
+    if (!decoded.role) {
+      decoded.role = 'user';
     }
 
     callback(decoded);

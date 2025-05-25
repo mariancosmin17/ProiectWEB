@@ -5,7 +5,30 @@ const { getCorsHeaders } = require('../utils/corsHeaders');
 function handleAbrevieriRoutes(req, res, parsedUrl) {
   if (req.method === 'GET' && parsedUrl.pathname === '/api/abrevieri') {
     verifyToken(req, res, (decoded) => {
+      let query = 'SELECT * FROM abrevieri';
+      let params = [];
       
+      if (decoded.role !== 'admin' && decoded.role !== 'guest') {
+        query = 'SELECT * FROM abrevieri WHERE autor = ?';
+        params = [decoded.username];
+      }
+      
+      db.all(query, params, (err, rows) => {
+        if (err) {
+          res.writeHead(500, getCorsHeaders());
+          res.end(JSON.stringify({ error: 'Eroare la interogare DB' }));
+          return;
+        }
+
+        res.writeHead(200, getCorsHeaders());
+        res.end(JSON.stringify(rows));
+      });
+    });
+    return true;
+  }
+  
+  else if (req.method === 'GET' && parsedUrl.pathname === '/api/toate-abrevierile') {
+    verifyToken(req, res, (decoded) => {
       db.all('SELECT * FROM abrevieri', [], (err, rows) => {
         if (err) {
           res.writeHead(500, getCorsHeaders());
@@ -22,7 +45,6 @@ function handleAbrevieriRoutes(req, res, parsedUrl) {
   
   else if (req.method === 'POST' && parsedUrl.pathname === '/api/abrevieri') {
     verifyToken(req, res, (decoded) => {
-      
       if (decoded.role === 'guest') {
         res.writeHead(403, getCorsHeaders());
         res.end(JSON.stringify({ 
@@ -31,6 +53,16 @@ function handleAbrevieriRoutes(req, res, parsedUrl) {
         }));
         return;
       }
+
+       const currentTime = Math.floor(Date.now() / 1000);
+    if (decoded.exp && decoded.exp < currentTime) {
+      res.writeHead(401, getCorsHeaders());
+      res.end(JSON.stringify({ 
+        succes: false, 
+        mesaj: 'Sesiune expirată. Te rugăm să te autentifici din nou.' 
+      }));
+      return;
+    }
       
       let body = '';
       req.on('data', chunk => body += chunk);
