@@ -2,11 +2,148 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
   <script defer src="dashboard.js"></script>
 </head>
-<body>
-  <h1 id="welcomeMessage">Bine ai venit!</h1>
-  <ul id="listaAbrevieri"></ul>
+<body class="dashboard-body">
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h1>APlace</h1>
+      </div>
+      
+      <nav class="nav-menu">
+        <ul>
+          <li class="nav-item">
+            <a href="#" class="nav-link active" data-section="dashboard">
+              <span class="nav-icon">📊</span>
+              Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-section="add">
+              <span class="nav-icon">➕</span>
+              Add Abbreviation
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-section="list">
+              <span class="nav-icon">📋</span>
+              Abbreviation List
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-section="export">
+              <span class="nav-icon">📤</span>
+              Export
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-section="statistics">
+              <span class="nav-icon">📈</span>
+              Statistics
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-section="profile">
+              <span class="nav-icon">👤</span>
+              Profile
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Conținut principal -->
+    <div class="main-content">
+      <!-- Header -->
+      <div class="content-header">
+        <div class="welcome-section">
+          <h2 id="welcomeMessage">Bine ai venit!</h2>
+          <p>Gestionează abrevierile tale cu ușurință</p>
+        </div>
+        <div id="auth-buttons" class="auth-buttons"></div>
+      </div>
+
+      <!-- Secțiunea Dashboard -->
+      <div id="dashboard-section" class="content-section active">
+        <!-- Carduri statistici -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number" id="total-abbreviations">0</div>
+            <div class="stat-label">Total Abrevieri</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="total-categories">0</div>
+            <div class="stat-label">Categorii</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="coverage-percentage">0%</div>
+            <div class="stat-label">Acoperire Abrevieri</div>
+          </div>
+        </div>
+
+        <!-- Lista abrevierilor -->
+        <div class="abbreviations-section">
+          <h3>Abrevierile Tale</h3>
+          <div class="abbreviations-container">
+            <ul id="listaAbrevieri" class="abbreviations-list loading">
+              Se încarcă abrevierile...
+            </ul>
+          </div>
+        </div>
+
+        <!-- Secțiunea de securitate -->
+        <div class="security-section">
+          <h3>Prezentare Generală Securitate</h3>
+          <div class="security-icon-dashboard">
+            <svg viewBox="0 0 24 24">
+              <path d="M12,1A11,11 0 0,0 1,12A11,11 0 0,0 12,23A11,11 0 0,0 23,12A11,11 0 0,0 12,1M12,3A9,9 0 0,1 21,12A9,9 0 0,1 12,21A9,9 0 0,1 3,12A9,9 0 0,1 12,3M10,16.5L6,12.5L7.5,11L10,13.5L16.5,7L18,8.5L10,16.5Z" />
+            </svg>
+          </div>
+          <p>Contul tău este protejat cu măsuri avansate de securitate.</p>
+        </div>
+      </div>
+
+      <!-- Alte secțiuni -->
+      <div id="add-section" class="content-section">
+        <div class="section-placeholder">
+          <h3>Adaugă Abreviere Nouă</h3>
+          <p>Aici va fi formularul pentru adăugarea de abrevieri noi.</p>
+        </div>
+      </div>
+
+      <div id="list-section" class="content-section">
+        <div class="section-placeholder">
+          <h3>Lista Abrevierilor</h3>
+          <p>Aici va fi lista completă a abrevierilor cu opțiuni de filtrare și căutare.</p>
+        </div>
+      </div>
+
+      <div id="export-section" class="content-section">
+        <div class="section-placeholder">
+          <h3>Export Date</h3>
+          <p>Aici vei putea exporta datele în diferite formate (CSV, JSON, PDF).</p>
+        </div>
+      </div>
+
+      <div id="statistics-section" class="content-section">
+        <div class="section-placeholder">
+          <h3>Statistici Detaliate</h3>
+          <p>Aici vor fi afișate grafice și statistici detaliate despre abrevieri.</p>
+        </div>
+      </div>
+
+      <div id="profile-section" class="content-section">
+        <div class="section-placeholder">
+          <h3>Profil Utilizator</h3>
+          <p>Aici vei putea gestiona setările contului, schimba parola și preferințele.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
