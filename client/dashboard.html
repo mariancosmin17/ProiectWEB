@@ -9,7 +9,7 @@
 </head>
 <body class="dashboard-body">
   <div class="dashboard-container">
-    <!-- Sidebar -->
+    
     <div class="sidebar">
       <div class="sidebar-header">
         <h1>APlace</h1>
@@ -57,9 +57,8 @@
       </nav>
     </div>
 
-    <!-- Conținut principal -->
     <div class="main-content">
-      <!-- Header -->
+    
       <div class="content-header">
         <div class="welcome-section">
           <h2 id="welcomeMessage">Bine ai venit!</h2>
@@ -110,11 +109,28 @@
 
       <!-- Alte secțiuni -->
       <div id="add-section" class="content-section">
-        <div class="section-placeholder">
-          <h3>Adaugă Abreviere Nouă</h3>
-          <p>Aici va fi formularul pentru adăugarea de abrevieri noi.</p>
-        </div>
-      </div>
+  <h3>Adaugă Abreviere Nouă</h3>
+  <form id="addForm">
+    <div>
+      <label for="abreviere">Abreviere:</label>
+      <input type="text" id="abreviere" required>
+    </div>
+    <div>
+      <label for="semnificatie">Semnificație:</label>
+      <input type="text" id="semnificatie" required>
+    </div>
+    <div>
+      <label for="limba">Limbă:</label>
+      <input type="text" id="limba" required>
+    </div>
+    <div>
+      <label for="domeniu">Domeniu:</label>
+      <input type="text" id="domeniu" required>
+    </div>
+    <button type="submit">Adaugă</button>
+    <p id="addMesaj" class="mesaj"></p>
+  </form>
+</div>
 
       <div id="list-section" class="content-section">
         <div class="section-placeholder">

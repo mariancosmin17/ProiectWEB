@@ -381,3 +381,82 @@ body {
   color: #00BFFF;
   text-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
 }
+
+/* ========================================
+   13. FORMULAR DE ADĂUGARE
+======================================== */
+
+#add-section {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  border: 1px solid #e1e5e9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+#add-section h3 {
+  color: #0039a6;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+#addForm {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#addForm div {
+  margin-bottom: 20px;
+}
+
+#addForm label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #444;
+}
+
+#addForm input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+#addForm input:focus {
+  border-color: #0039a6;
+  box-shadow: 0 0 0 2px rgba(0, 57, 166, 0.1);
+  outline: none;
+}
+
+#addForm button {
+  background: #0039a6;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 30px auto 0;
+}
+
+#addForm button:hover {
+  background: #00BFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 191, 255, 0.3);
+}
+
+.mesaj {
+  text-align: center;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
