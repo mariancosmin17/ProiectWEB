@@ -1,0 +1,64 @@
+.abrev-info {
+  flex: 1;
+}
+
+.abbreviations-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  margin-bottom: 8px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 3px solid #0039a6;
+  transition: all 0.3s ease;
+}
+
+.abbreviations-list li:hover {
+  background: #e3f2fd;
+  transform: translateX(5px);
+}
+
+.abrev-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  border: none;
+  background: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 16px;
+}
+
+.edit-btn {
+  color: #0039a6;
+  background: rgba(0, 57, 166, 0.1);
+}
+
+.edit-btn:hover {
+  background: rgba(0, 57, 166, 0.2);
+  transform: translateY(-2px);
+}
+
+.delete-btn {
+  color: #dc3545;
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.delete-btn:hover {
+  background: rgba(220, 53, 69, 0.2);
+  transform: translateY(-2px);
+}
+
+.action-btn span {
+  font-size: 18px;
+  font-weight: bold;
+}

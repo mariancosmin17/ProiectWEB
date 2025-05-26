@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset Password</title>
+  <title>Login</title>
   <style>
     /* Embedding the CSS directly in each file to avoid path issues */
     * {
@@ -179,32 +179,42 @@
     }
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
-  <script defer src="scripts.js"></script>
+  <script defer src="../js/scripts.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const token = localStorage.getItem('jwt');
+      if (token) {
+        window.location.href = 'dashboard.html';
+      }
+    });
+  </script>
 </head>
 <body>
   <div class="container">
     <div class="card">
       <div class="login-section">
-        <h2>RESET PASSWORD</h2>
-        <form id="forgotForm">
+        <h2>LOGIN</h2>
+        <form id="loginForm">
           <div class="form-group">
-            <label for="forgotUsername">USERNAME:</label>
-            <input type="text" id="forgotUsername" required>
+            <label for="username">USERNAME:</label>
+            <input type="text" id="username" required>
           </div>
           
           <div class="form-group">
-            <label for="newPassword">NEW PASSWORD:</label>
-            <input type="password" id="newPassword" required>
+            <label for="parola">PASSWORD:</label>
+            <input type="password" id="parola" required>
           </div>
           
-          <button type="submit" class="btn-primary">RESET</button>
+          <button type="submit" class="btn-primary">SIGN IN</button>
         </form>
-        <p class="info-text"><a href="login.html">Back to login</a></p>
-        <p id="forgotMesaj" class="message"></p>
+        <p class="info-text">Don't have an account? <a href="register.html">Register here</a></p>
+        <p class="info-text"><a href="forgot.html">Forgot password?</a></p>
+        <p class="info-text"><a href="#" id="continuaVizitator">Continue as guest</a></p>
+        <p id="mesaj" class="message"></p>
       </div>
       <div class="brand-section">
         <div class="icon-container">
-          <i class="fas fa-key"></i>
+          <i class="fas fa-lock"></i>
         </div>
         <h3>APlace</h3>
       </div>

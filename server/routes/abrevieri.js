@@ -53,16 +53,6 @@ function handleAbrevieriRoutes(req, res, parsedUrl) {
         }));
         return;
       }
-
-       const currentTime = Math.floor(Date.now() / 1000);
-    if (decoded.exp && decoded.exp < currentTime) {
-      res.writeHead(401, getCorsHeaders());
-      res.end(JSON.stringify({ 
-        succes: false, 
-        mesaj: 'Sesiune expirată. Te rugăm să te autentifici din nou.' 
-      }));
-      return;
-    }
       
       let body = '';
       req.on('data', chunk => body += chunk);

@@ -1,9 +1,10 @@
-
 const http = require('http');
 const url = require('url');
 const { PORT } = require('./config');
 const { handleCorsOptions } = require('./utils/corsHeaders');
 const { handleAbrevieriRoutes } = require('./routes/abrevieri');
+const { handleAbrevieriEditRoutes } = require('./routes/abrevieri-edit');
+const { handleAbrevieriDeleteRoutes } = require('./routes/abrevieri-delete');
 const { handleAuthRoutes } = require('./routes/auth');
 
 const server = http.createServer((req, res) => {
@@ -17,10 +18,19 @@ const server = http.createServer((req, res) => {
     return;
   }
   
+  if (handleAbrevieriEditRoutes(req, res, parsedUrl)) {
+    return;
+  }
+  
+  if (handleAbrevieriDeleteRoutes(req, res, parsedUrl)) {
+    return;
+  }
+  
   if (handleAuthRoutes(req, res, parsedUrl)) {
     return;
   }
 
+  // 404 Not Found
   res.writeHead(404, {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',

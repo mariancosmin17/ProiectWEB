@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log(date); 
       if (date.succes && date.token) {
   localStorage.setItem('jwt', date.token);
-  window.location.href = 'dashboard.html';
+  window.location.href = '../html/dashboard.html';
 }
       
       else {
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
   mesaj.style.color = 'green';
 
   setTimeout(() => {
-    window.location.href = 'login.html';
+    window.location.href = '../html/login.html';
   }, 2000);
 
       } else {
@@ -123,7 +123,7 @@ if (linkVizitator) {
     const data = await raspuns.json();
     if (data.succes && data.token) {
       localStorage.setItem('jwt', data.token);
-      window.location.href = 'dashboard.html';
+      window.location.href = '../html/dashboard.html';
     } else {
       alert('Eroare la autentificare vizitator');
     }

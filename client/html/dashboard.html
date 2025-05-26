@@ -1,53 +1,60 @@
-<script>
-  // Verifică imediat dacă utilizatorul este autentificat
-  (function() {
-    const token = localStorage.getItem('jwt');
-    
-    function parseJwt(token) {
-      try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-        return JSON.parse(jsonPayload);
-      } catch (e) {
-        return null;
-      }
-    }
-    
-    function isValidToken(token) {
-      if (!token) return false;
-      
-      try {
-        const decoded = parseJwt(token);
-        if (!decoded) return false;
-        
-        const currentTime = Date.now() / 1000;
-        return !(decoded.exp && decoded.exp < currentTime);
-      } catch (e) {
-        return false;
-      }
-    }
-    
-    if (!isValidToken(token)) {
-      window.location.href = 'login.html';
-    }
-  })();
-</script>
-
 <!DOCTYPE html>
 <html lang="ro">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
-  <link rel="stylesheet" href="dashboard.css">
-  <script defer src="dashboard.js"></script>
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/modal.css">
+  <link rel="stylesheet" href="../css/abrevieri.css">
+  
+  <!-- Guard pentru verificarea autentificării -->
+  <script>
+    (function() {
+      function parseJwt(token) {
+        try {
+          const base64Url = token.split('.')[1];
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          }).join(''));
+          return JSON.parse(jsonPayload);
+        } catch (e) {
+          return null;
+        }
+      }
+      
+      function isValidToken(token) {
+        if (!token) return false;
+        
+        try {
+          const decoded = parseJwt(token);
+          if (!decoded) return false;
+          
+          const currentTime = Date.now() / 1000;
+          return !(decoded.exp && decoded.exp < currentTime);
+        } catch (e) {
+          return false;
+        }
+      }
+      
+      const token = localStorage.getItem('jwt');
+      if (!isValidToken(token)) {
+        window.location.href = 'login.html';
+      }
+    })();
+  </script>
+  
+  <!-- Modulele JavaScript -->
+  <script src="../js/auth-frontend.js"></script>
+  <script src="../js/abrevieri-service.js"></script>
+  <script src="../js/ui-handlers.js"></script>
+  <script src="../js/dashboard.js" defer></script>
 </head>
 <body class="dashboard-body">
+  <!-- Restul conținutului HTML rămâne neschimbat -->
   <div class="dashboard-container">
-    
+    <!-- Sidebar -->
     <div class="sidebar">
       <div class="sidebar-header">
         <h1>APlace</h1>
@@ -95,8 +102,9 @@
       </nav>
     </div>
 
+    <!-- Conținut principal -->
     <div class="main-content">
-    
+      <!-- Header -->
       <div class="content-header">
         <div class="welcome-section">
           <h2 id="welcomeMessage">Bine ai venit!</h2>
@@ -147,28 +155,28 @@
 
       <!-- Alte secțiuni -->
       <div id="add-section" class="content-section">
-  <h3>Adaugă Abreviere Nouă</h3>
-  <form id="addForm">
-    <div>
-      <label for="abreviere">Abreviere:</label>
-      <input type="text" id="abreviere" required>
-    </div>
-    <div>
-      <label for="semnificatie">Semnificație:</label>
-      <input type="text" id="semnificatie" required>
-    </div>
-    <div>
-      <label for="limba">Limbă:</label>
-      <input type="text" id="limba" required>
-    </div>
-    <div>
-      <label for="domeniu">Domeniu:</label>
-      <input type="text" id="domeniu" required>
-    </div>
-    <button type="submit">Adaugă</button>
-    <p id="addMesaj" class="mesaj"></p>
-  </form>
-</div>
+        <h3>Adaugă Abreviere Nouă</h3>
+        <form id="addForm">
+          <div>
+            <label for="abreviere">Abreviere:</label>
+            <input type="text" id="abreviere" required>
+          </div>
+          <div>
+            <label for="semnificatie">Semnificație:</label>
+            <input type="text" id="semnificatie" required>
+          </div>
+          <div>
+            <label for="limba">Limbă:</label>
+            <input type="text" id="limba" required>
+          </div>
+          <div>
+            <label for="domeniu">Domeniu:</label>
+            <input type="text" id="domeniu" required>
+          </div>
+          <button type="submit">Adaugă</button>
+          <p id="addMesaj" class="mesaj"></p>
+        </form>
+      </div>
 
       <div id="list-section" class="content-section">
         <div class="section-placeholder">
