@@ -91,9 +91,61 @@ function generateVerificationCode() {
 }
 
 function sendEmailWithCode(email, code) {
-  console.log(`[SIMULATOR EMAIL] Trimit codul ${code} la adresa ${email}`);
+  const verifiedEmail = "aplce150@gmail.com";
   
-  return true;
+  const data = JSON.stringify({
+    personalizations: [{ 
+      to: [{ email: email }] 
+    }],
+    from: { 
+      email: verifiedEmail, 
+      name: "APlace Password Reset" 
+    },
+    subject: "Cod de verificare APlace",
+    content: [{ 
+      type: "text/plain", 
+      value: `Codul tău de verificare este: ${code}` 
+    }]
+  });
+  
+  const options = {
+    hostname: "api.sendgrid.com",
+    path: "/v3/mail/send",
+    method: "POST",
+    headers: {
+      "Authorization": "cod_secret",
+      "Content-Type": "application/json",
+      "Content-Length": Buffer.byteLength(data) 
+    }
+  };
+  
+  return new Promise((resolve) => {
+    const req = https.request(options, (res) => {
+      let responseBody = '';
+      
+      res.on('data', (chunk) => {
+        responseBody += chunk;
+      });
+      
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          console.log("Email trimis cu succes!");
+          resolve(true);
+        } else {
+          console.error("Eroare la trimiterea email-ului:", responseBody);
+          resolve(false);
+        }
+      });
+    });
+    
+    req.on('error', (error) => {
+      console.error("Eroare la conexiune:", error);
+      resolve(false);
+    });
+    
+    req.write(data);
+    req.end();
+  });
 }
 
 function handleForgotRequest(req, res) {
