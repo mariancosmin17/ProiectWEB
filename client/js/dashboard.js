@@ -133,6 +133,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // Setează verificarea periodică a token-ului
   authUtils.setupTokenCheck();
 });
