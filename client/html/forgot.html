@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reset Password</title>
   <style>
-    /* Embedding the CSS directly in each file to avoid path issues */
+    /* Stilurile existente rămân la fel */
     * {
       margin: 0;
       padding: 0;
@@ -136,6 +136,10 @@
       font-size: 14px;
     }
 
+    .message.success {
+      color: #4CAF50;
+    }
+
     .icon-container {
       width: 80px;
       height: 80px;
@@ -156,6 +160,10 @@
       color: #0039a6;
       font-size: 24px;
       font-weight: 600;
+    }
+
+    .hidden {
+      display: none;
     }
 
     /* Responsive adjustments */
@@ -180,25 +188,49 @@
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
   <script defer src="../js/scripts.js"></script>
+  <script defer src="../js/auth-frontend.js"></script>
 </head>
 <body>
   <div class="container">
     <div class="card">
       <div class="login-section">
         <h2>RESET PASSWORD</h2>
-        <form id="forgotForm">
+        
+        <!-- Formular 1: Solicitare email -->
+        <form id="emailForm">
           <div class="form-group">
-            <label for="forgotUsername">USERNAME:</label>
-            <input type="text" id="forgotUsername" required>
+            <label for="userEmail">EMAIL:</label>
+            <input type="email" id="userEmail" required>
           </div>
           
+          <button type="submit" class="btn-primary">SEND VERIFICATION CODE</button>
+        </form>
+        
+        <!-- Formular 2: Verificare cod -->
+        <form id="verificationForm" class="hidden">
+          <div class="form-group">
+            <label for="verificationCode">VERIFICATION CODE:</label>
+            <input type="text" id="verificationCode" required>
+          </div>
+          
+          <button type="submit" class="btn-primary">VERIFY CODE</button>
+        </form>
+        
+        <!-- Formular 3: Resetare parolă -->
+        <form id="resetForm" class="hidden">
           <div class="form-group">
             <label for="newPassword">NEW PASSWORD:</label>
             <input type="password" id="newPassword" required>
           </div>
           
-          <button type="submit" class="btn-primary">RESET</button>
+          <div class="form-group">
+            <label for="confirmPassword">CONFIRM PASSWORD:</label>
+            <input type="password" id="confirmPassword" required>
+          </div>
+          
+          <button type="submit" class="btn-primary">RESET PASSWORD</button>
         </form>
+        
         <p class="info-text"><a href="login.html">Back to login</a></p>
         <p id="forgotMesaj" class="message"></p>
       </div>
@@ -210,5 +242,117 @@
       </div>
     </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const emailForm = document.getElementById('emailForm');
+      const verificationForm = document.getElementById('verificationForm');
+      const resetForm = document.getElementById('resetForm');
+      const mesajElement = document.getElementById('forgotMesaj');
+      
+      let userEmail = '';
+      
+      emailForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        userEmail = document.getElementById('userEmail').value;
+        
+        fetch('http://localhost:8080/api/forgot-request', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email: userEmail })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.succes) {
+            mesajElement.textContent = 'Verification code sent to your email!';
+            mesajElement.className = 'message success';
+            emailForm.classList.add('hidden');
+            verificationForm.classList.remove('hidden');
+          } else {
+            mesajElement.textContent = data.mesaj || 'Error sending verification code';
+            mesajElement.className = 'message';
+          }
+        })
+        .catch(error => {
+          mesajElement.textContent = 'Server error. Please try again later.';
+          mesajElement.className = 'message';
+        });
+      });
+      
+      verificationForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const verificationCode = document.getElementById('verificationCode').value;
+        
+        fetch('http://localhost:8080/api/forgot-verify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 
+            email: userEmail,
+            code: verificationCode 
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.succes) {
+            mesajElement.textContent = 'Code verified! Set your new password.';
+            mesajElement.className = 'message success';
+            verificationForm.classList.add('hidden');
+            resetForm.classList.remove('hidden');
+          } else {
+            mesajElement.textContent = data.mesaj || 'Invalid verification code';
+            mesajElement.className = 'message';
+          }
+        })
+        .catch(error => {
+          mesajElement.textContent = 'Server error. Please try again later.';
+          mesajElement.className = 'message';
+        });
+      });
+      
+      resetForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        if (newPassword !== confirmPassword) {
+          mesajElement.textContent = 'Passwords do not match!';
+          mesajElement.className = 'message';
+          return;
+        }
+        
+        fetch('http://localhost:8080/api/forgot-reset', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 
+            email: userEmail,
+            parolaNoua: newPassword 
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.succes) {
+            mesajElement.textContent = 'Password reset successfully!';
+            mesajElement.className = 'message success';
+            setTimeout(() => {
+              window.location.href = 'login.html';
+            }, 2000);
+          } else {
+            mesajElement.textContent = data.mesaj || 'Error resetting password';
+            mesajElement.className = 'message';
+          }
+        })
+        .catch(error => {
+          mesajElement.textContent = 'Server error. Please try again later.';
+          mesajElement.className = 'message';
+        });
+      });
+    });
+  </script>
 </body>
 </html>
