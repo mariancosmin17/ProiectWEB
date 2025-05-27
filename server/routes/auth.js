@@ -113,7 +113,7 @@ function sendEmailWithCode(email, code) {
     path: "/v3/mail/send",
     method: "POST",
     headers: {
-      "Authorization": "cod_secret",
+      "Authorization": "Bearer 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",
       "Content-Type": "application/json",
       "Content-Length": Buffer.byteLength(data) 
     }
