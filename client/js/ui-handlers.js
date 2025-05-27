@@ -58,6 +58,7 @@ function editAbreviere(abreviere) {
   
   setTimeout(() => {
     modal.style.display = 'flex';
+    modal.style.opacity = '1';
   }, 10);
   
   const closeBtn = modal.querySelector('.close-modal');
@@ -140,6 +141,7 @@ function deleteAbreviere(id) {
   
   setTimeout(() => {
     modal.style.display = 'flex';
+    modal.style.opacity = '1';
   }, 10);
   
   const closeBtn = modal.querySelector('.close-modal');

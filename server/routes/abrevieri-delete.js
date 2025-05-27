@@ -1,4 +1,3 @@
-// const db = require('../db'); // Nu mai folosim baza de date
 const docbookManager = require('../utils/docbookManager');
 const { verifyToken } = require('../middleware/auth');
 const { getCorsHeaders } = require('../utils/corsHeaders');
