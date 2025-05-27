@@ -1,44 +1,44 @@
-const db = require('../db');
+const docbookManager = require('../utils/docbookManager');
 const { verifyToken } = require('../middleware/auth');
 const { getCorsHeaders } = require('../utils/corsHeaders');
 
 function handleAbrevieriRoutes(req, res, parsedUrl) {
   if (req.method === 'GET' && parsedUrl.pathname === '/api/abrevieri') {
-    verifyToken(req, res, (decoded) => {
-      let query = 'SELECT * FROM abrevieri';
-      let params = [];
-      
-      if (decoded.role !== 'admin' && decoded.role !== 'guest') {
-        query = 'SELECT * FROM abrevieri WHERE autor = ?';
-        params = [decoded.username];
-      }
-      
-      db.all(query, params, (err, rows) => {
-        if (err) {
-          res.writeHead(500, getCorsHeaders());
-          res.end(JSON.stringify({ error: 'Eroare la interogare DB' }));
-          return;
+    verifyToken(req, res, async (decoded) => {
+      try {
+        let abrevieri = [];
+        
+        if (decoded.role !== 'admin' && decoded.role !== 'guest') {
+          
+          abrevieri = await docbookManager.getAbrevieriByAutor(decoded.username);
+        } else {
+        
+          abrevieri = await docbookManager.getAbrevieri();
         }
-
+        
         res.writeHead(200, getCorsHeaders());
-        res.end(JSON.stringify(rows));
-      });
+        res.end(JSON.stringify(abrevieri));
+      } catch (error) {
+        console.error('Eroare la obținerea abrevierilor:', error);
+        res.writeHead(500, getCorsHeaders());
+        res.end(JSON.stringify({ error: 'Eroare la obținerea abrevierilor' }));
+      }
     });
     return true;
   }
   
   else if (req.method === 'GET' && parsedUrl.pathname === '/api/toate-abrevierile') {
-    verifyToken(req, res, (decoded) => {
-      db.all('SELECT * FROM abrevieri', [], (err, rows) => {
-        if (err) {
-          res.writeHead(500, getCorsHeaders());
-          res.end(JSON.stringify({ error: 'Eroare la interogare DB' }));
-          return;
-        }
-
+    verifyToken(req, res, async (decoded) => {
+      try {
+        const abrevieri = await docbookManager.getAbrevieri();
+        
         res.writeHead(200, getCorsHeaders());
-        res.end(JSON.stringify(rows));
-      });
+        res.end(JSON.stringify(abrevieri));
+      } catch (error) {
+        console.error('Eroare la obținerea tuturor abrevierilor:', error);
+        res.writeHead(500, getCorsHeaders());
+        res.end(JSON.stringify({ error: 'Eroare la obținerea abrevierilor' }));
+      }
     });
     return true;
   }
@@ -56,7 +56,7 @@ function handleAbrevieriRoutes(req, res, parsedUrl) {
       
       let body = '';
       req.on('data', chunk => body += chunk);
-      req.on('end', () => {
+      req.on('end', async () => {
         try {
           const data = JSON.parse(body);
           const { abreviere, semnificatie, limba, domeniu } = data;
@@ -71,29 +71,21 @@ function handleAbrevieriRoutes(req, res, parsedUrl) {
           }
           
           const autor = decoded.username || 'necunoscut';
+          const result = await docbookManager.addAbreviere({
+            abreviere, 
+            semnificatie, 
+            limba, 
+            domeniu, 
+            autor
+          });
           
-          db.run(
-            'INSERT INTO abrevieri (abreviere, semnificatie, limba, domeniu, autor) VALUES (?, ?, ?, ?, ?)',
-            [abreviere, semnificatie, limba, domeniu, autor],
-            function (err) {
-              if (err) {
-                console.error('Eroare SQL:', err);
-                res.writeHead(400, getCorsHeaders());
-                res.end(JSON.stringify({ 
-                  succes: false, 
-                  mesaj: 'Eroare la inserare în baza de date.' 
-                }));
-                return;
-              }
-
-              res.writeHead(201, getCorsHeaders());
-              res.end(JSON.stringify({ 
-                succes: true, 
-                mesaj: 'Abreviere adăugată cu succes!',
-                id: this.lastID 
-              }));
-            }
-          );
+          if (result.succes) {
+            res.writeHead(201, getCorsHeaders());
+          } else {
+            res.writeHead(400, getCorsHeaders());
+          }
+          
+          res.end(JSON.stringify(result));
         } catch (err) {
           res.writeHead(400, getCorsHeaders());
           res.end(JSON.stringify({ 
