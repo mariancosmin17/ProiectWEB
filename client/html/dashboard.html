@@ -7,7 +7,8 @@
   <link rel="stylesheet" href="../css/dashboard.css">
   <link rel="stylesheet" href="../css/modal.css">
   <link rel="stylesheet" href="../css/abrevieri.css">
-  
+  <link rel="stylesheet" href="../css/abrevieri-list.css">
+
   <!-- Guard pentru verificarea autentificării -->
   <script>
     (function() {
@@ -132,14 +133,72 @@
         </div>
 
         <!-- Lista abrevierilor -->
-        <div class="abbreviations-section">
-          <h3>Abrevierile Tale</h3>
-          <div class="abbreviations-container">
-            <ul id="listaAbrevieri" class="abbreviations-list loading">
-              Se încarcă abrevierile...
-            </ul>
-          </div>
-        </div>
+        <div id="list-section" class="content-section">
+  <h3>Lista Abrevierilor</h3>
+  
+  <div class="filter-search-container">
+    <div class="search-box">
+      <input type="text" id="search-abrevieri" placeholder="Caută abreviere sau semnificație...">
+      <button id="search-button"><span>🔍</span></button>
+    </div>
+    
+    <div class="filters">
+      <div class="filter-group">
+        <label for="filter-limba">Limbă:</label>
+        <select id="filter-limba">
+          <option value="">Toate</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="filter-domeniu">Domeniu:</label>
+        <select id="filter-domeniu">
+          <option value="">Toate</option>
+        </select>
+      </div>
+      
+      <div class="filter-group" id="autor-filter-container">
+        <label for="filter-autor">Autor:</label>
+        <select id="filter-autor">
+          <option value="">Toți</option>
+        </select>
+      </div>
+      
+      <button id="reset-filters" class="btn-reset">Resetează filtrele</button>
+    </div>
+  </div>
+  
+  <div class="abbreviations-container full-list">
+    <div class="abbreviations-header">
+      <div class="abrev-col">Abreviere</div>
+      <div class="semnif-col">Semnificație</div>
+      <div class="meta-col">Limba</div>
+      <div class="meta-col">Domeniu</div>
+      <div class="meta-col" id="autor-col">Autor</div>
+      <div class="actions-col">Acțiuni</div>
+    </div>
+    
+    <ul id="lista-completa-abrevieri" class="abbreviations-list loading">
+      Se încarcă abrevierile...
+    </ul>
+    
+    <div class="pagination-controls">
+      <button id="prev-page" disabled>← Anterior</button>
+      <span id="page-info">Pagina 1 din 1</span>
+      <button id="next-page" disabled>Următor →</button>
+    </div>
+  </div>
+  
+  <div id="no-results" class="no-results hidden">
+    <div class="empty-state">
+      <div class="icon-container">
+        <span>🔍</span>
+      </div>
+      <h4>Niciun rezultat găsit</h4>
+      <p>Încercați alte criterii de căutare sau resetați filtrele.</p>
+    </div>
+  </div>
+</div>
 
         <!-- Secțiunea de securitate -->
         <div class="security-section">

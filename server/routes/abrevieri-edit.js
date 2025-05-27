@@ -42,6 +42,7 @@ function handleAbrevieriEditRoutes(req, res, parsedUrl) {
             return;
           }
           
+          // Verificăm dacă abrevierea există și dacă utilizatorul are dreptul să o editeze
           const abreviereExistenta = await docbookManager.getAbreviereById(id);
           
           if (!abreviereExistenta) {
