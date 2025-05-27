@@ -66,7 +66,6 @@ function handleAbrevieriDeleteRoutes(req, res, parsedUrl) {
     });
     return true;
   }
-  
   return false;
 }
 
