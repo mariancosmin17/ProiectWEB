@@ -102,6 +102,13 @@
   padding: 0 10px;
 }
 
+.abbreviations-container.full-list {
+  position: relative;
+  min-height: 300px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
 .abrev-list-item {
   display: flex;
   padding: 15px 20px;
@@ -141,13 +148,16 @@
 
 /* Paginarea */
 .pagination-controls {
-  display: flex;
+  display: flex !important;
   justify-content: center;
   align-items: center;
   gap: 20px;
   padding: 20px;
   background: #f8f9fa;
   border-top: 1px solid #e1e5e9;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
 }
 
 .pagination-controls button {
