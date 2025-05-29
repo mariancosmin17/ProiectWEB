@@ -6,6 +6,8 @@ const { handleAbrevieriRoutes } = require('./routes/abrevieri');
 const { handleAbrevieriEditRoutes } = require('./routes/abrevieri-edit');
 const { handleAbrevieriDeleteRoutes } = require('./routes/abrevieri-delete');
 const { handleAuthRoutes } = require('./routes/auth');
+const { handleUtilizatoriRoutes } = require('./routes/utilizatori');
+
 
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
@@ -29,6 +31,10 @@ const server = http.createServer((req, res) => {
   if (handleAuthRoutes(req, res, parsedUrl)) {
     return;
   }
+  if (handleUtilizatoriRoutes(req, res, parsedUrl)) {
+  return;
+}
+
 
   // 404 Not Found
   res.writeHead(404, {

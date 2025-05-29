@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const db = require('../db');
 const { SALT_ROUNDS, SECRET_KEY } = require('../config');
 const { getCorsHeaders } = require('../utils/corsHeaders');
-const http = require('http');
 const https = require('https');
 
 function handleLogin(req, res) {
@@ -35,19 +34,18 @@ function handleLogin(req, res) {
 
         if (rezultat) {
           const token = jwt.sign(
-            { 
+            {
+              id: user.id, // 🔑 Aici e cheia: trimitem id-ul utilizatorului în token
               username: user.username,
               role: user.rol || 'user'
-            }, 
-            SECRET_KEY, 
+            },
+            SECRET_KEY,
             { expiresIn: '1h' }
           );
 
           res.writeHead(200, getCorsHeaders());
           res.end(JSON.stringify({ succes: true, token }));
         } else {
-          console.log('❌ Parolă greșită');
-          
           res.writeHead(401, getCorsHeaders());
           res.end(JSON.stringify({ succes: false, mesaj: 'Parolă greșită' }));
         }
@@ -94,18 +92,10 @@ function sendEmailWithCode(email, code) {
   const verifiedEmail = "aplce150@gmail.com";
   
   const data = JSON.stringify({
-    personalizations: [{ 
-      to: [{ email: email }] 
-    }],
-    from: { 
-      email: verifiedEmail, 
-      name: "APlace Password Reset" 
-    },
+    personalizations: [{ to: [{ email: email }] }],
+    from: { email: verifiedEmail, name: "APlace Password Reset" },
     subject: "Cod de verificare APlace",
-    content: [{ 
-      type: "text/plain", 
-      value: `Codul tău de verificare este: ${code}` 
-    }]
+    content: [{ type: "text/plain", value: `Codul tău de verificare este: ${code}` }]
   });
   
   const options = {
@@ -123,23 +113,19 @@ function sendEmailWithCode(email, code) {
     const req = https.request(options, (res) => {
       let responseBody = '';
       
-      res.on('data', (chunk) => {
-        responseBody += chunk;
-      });
-      
+      res.on('data', (chunk) => { responseBody += chunk; });
       res.on('end', () => {
         if (res.statusCode >= 200 && res.statusCode < 300) {
-          console.log("Email trimis cu succes!");
           resolve(true);
         } else {
-          console.error("Eroare la trimiterea email-ului:", responseBody);
+          console.error("Eroare la email:", responseBody);
           resolve(false);
         }
       });
     });
     
     req.on('error', (error) => {
-      console.error("Eroare la conexiune:", error);
+      console.error("Eroare conexiune email:", error);
       resolve(false);
     });
     
@@ -156,42 +142,27 @@ function handleForgotRequest(req, res) {
     const { email } = data;
     
     db.get('SELECT * FROM utilizatori WHERE email = ?', [email], (err, user) => {
-      if (err) {
-        res.writeHead(500, getCorsHeaders());
-        res.end(JSON.stringify({ succes: false, mesaj: 'Eroare server' }));
-        return;
-      }
-      
-      if (!user) {
+      if (err || !user) {
         res.writeHead(400, getCorsHeaders());
-        res.end(JSON.stringify({ succes: false, mesaj: 'Nu există cont asociat acestui email' }));
+        res.end(JSON.stringify({ succes: false, mesaj: 'Email invalid sau utilizator inexistent' }));
         return;
       }
-      
-      const verificationCode = generateVerificationCode();
-      const expiryTime = Date.now() + 15 * 60 * 1000; 
-      
-      db.run(
-        'UPDATE utilizatori SET reset_code = ?, reset_expiry = ? WHERE email = ?',
-        [verificationCode, expiryTime, email],
-        function(err) {
+
+      const code = generateVerificationCode();
+      const expiry = Date.now() + 15 * 60 * 1000;
+
+      db.run('UPDATE utilizatori SET reset_code = ?, reset_expiry = ? WHERE email = ?', 
+        [code, expiry, email], async function(err) {
           if (err) {
             res.writeHead(500, getCorsHeaders());
-            res.end(JSON.stringify({ succes: false, mesaj: 'Eroare la actualizarea codului' }));
+            res.end(JSON.stringify({ succes: false }));
             return;
           }
-          
-          const emailSent = sendEmailWithCode(email, verificationCode);
-          
-          if (emailSent) {
-            res.writeHead(200, getCorsHeaders());
-            res.end(JSON.stringify({ succes: true, mesaj: 'Cod de verificare trimis pe email' }));
-          } else {
-            res.writeHead(500, getCorsHeaders());
-            res.end(JSON.stringify({ succes: false, mesaj: 'Eroare la trimiterea email-ului' }));
-          }
-        }
-      );
+
+          const success = await sendEmailWithCode(email, code);
+          res.writeHead(success ? 200 : 500, getCorsHeaders());
+          res.end(JSON.stringify({ succes: success }));
+      });
     });
   });
 }
@@ -200,36 +171,18 @@ function handleForgotVerify(req, res) {
   let body = '';
   req.on('data', chunk => body += chunk);
   req.on('end', () => {
-    const data = JSON.parse(body);
-    const { email, code } = data;
-    
-    db.get(
-      'SELECT * FROM utilizatori WHERE email = ? AND reset_code = ?',
-      [email, code],
-      (err, user) => {
-        if (err) {
-          res.writeHead(500, getCorsHeaders());
-          res.end(JSON.stringify({ succes: false, mesaj: 'Eroare server' }));
-          return;
-        }
-        
-        if (!user) {
-          res.writeHead(401, getCorsHeaders());
-          res.end(JSON.stringify({ succes: false, mesaj: 'Cod invalid' }));
-          return;
-        }
-        
-        const currentTime = Date.now();
-        if (user.reset_expiry < currentTime) {
-          res.writeHead(401, getCorsHeaders());
-          res.end(JSON.stringify({ succes: false, mesaj: 'Cod expirat' }));
-          return;
-        }
+    const { email, code } = JSON.parse(body);
 
-        res.writeHead(200, getCorsHeaders());
-        res.end(JSON.stringify({ succes: true }));
+    db.get('SELECT * FROM utilizatori WHERE email = ? AND reset_code = ?', [email, code], (err, user) => {
+      if (err || !user || Date.now() > user.reset_expiry) {
+        res.writeHead(401, getCorsHeaders());
+        res.end(JSON.stringify({ succes: false, mesaj: 'Cod invalid sau expirat' }));
+        return;
       }
-    );
+
+      res.writeHead(200, getCorsHeaders());
+      res.end(JSON.stringify({ succes: true }));
+    });
   });
 }
 
@@ -237,89 +190,43 @@ function handleForgotReset(req, res) {
   let body = '';
   req.on('data', chunk => body += chunk);
   req.on('end', () => {
-    const data = JSON.parse(body);
-    const { email, parolaNoua } = data;
-    
-    db.get(
-      'SELECT * FROM utilizatori WHERE email = ? AND reset_code IS NOT NULL',
-      [email],
-      (err, user) => {
-        if (err || !user) {
-          res.writeHead(401, getCorsHeaders());
-          res.end(JSON.stringify({ succes: false, mesaj: 'Sesiune de resetare invalidă' }));
-          return;
-        }
-        
-        bcrypt.hash(parolaNoua, SALT_ROUNDS, (err, hashNou) => {
-          if (err) {
-            res.writeHead(500, getCorsHeaders());
-            res.end(JSON.stringify({ succes: false, mesaj: 'Eroare la criptare parolă' }));
-            return;
-          }
-          
-          db.run(
-            'UPDATE utilizatori SET parola = ?, reset_code = NULL, reset_expiry = NULL WHERE email = ?',
-            [hashNou, email],
-            function(err) {
-              if (err) {
-                res.writeHead(500, getCorsHeaders());
-                res.end(JSON.stringify({ succes: false, mesaj: 'Eroare la actualizarea parolei' }));
-                return;
-              }
-              
-              res.writeHead(200, getCorsHeaders());
-              res.end(JSON.stringify({ succes: true, mesaj: 'Parola a fost actualizată cu succes' }));
-            }
-          );
-        });
+    const { email, parolaNoua } = JSON.parse(body);
+
+    bcrypt.hash(parolaNoua, SALT_ROUNDS, (err, hashNou) => {
+      if (err) {
+        res.writeHead(500, getCorsHeaders());
+        res.end(JSON.stringify({ succes: false }));
+        return;
       }
-    );
+
+      db.run('UPDATE utilizatori SET parola = ?, reset_code = NULL, reset_expiry = NULL WHERE email = ?',
+        [hashNou, email], function(err) {
+          res.writeHead(err ? 500 : 200, getCorsHeaders());
+          res.end(JSON.stringify({ succes: !err }));
+        });
+    });
   });
 }
 
 function handleGuestLogin(req, res) {
-  const guestToken = jwt.sign(
+  const token = jwt.sign(
     { username: 'vizitator', role: 'guest' },
     SECRET_KEY,
     { expiresIn: '1h' }
   );
 
   res.writeHead(200, getCorsHeaders());
-  res.end(JSON.stringify({ succes: true, token: guestToken }));
+  res.end(JSON.stringify({ succes: true, token }));
 }
 
 function handleAuthRoutes(req, res, parsedUrl) {
-  if (req.method === 'POST' && parsedUrl.pathname === '/api/login') {
-    handleLogin(req, res);
-    return true;
-  }
-  
-  if (req.method === 'POST' && parsedUrl.pathname === '/api/register') {
-    handleRegister(req, res);
-    return true;
-  }
-  
-  //endpoint uri noi 
-  if (req.method === 'POST' && parsedUrl.pathname === '/api/forgot-request') {
-    handleForgotRequest(req, res);
-    return true;
-  }
-  
-  if (req.method === 'POST' && parsedUrl.pathname === '/api/forgot-verify') {
-    handleForgotVerify(req, res);
-    return true;
-  }
-  
-  if (req.method === 'POST' && parsedUrl.pathname === '/api/forgot-reset') {
-    handleForgotReset(req, res);
-    return true;
-  }
-  
-  if (req.method === 'POST' && parsedUrl.pathname === '/api/login-guest') {
-    handleGuestLogin(req, res);
-    return true;
-  }
-  
+  if (req.method === 'POST' && parsedUrl.pathname === '/api/login') return handleLogin(req, res), true;
+  if (req.method === 'POST' && parsedUrl.pathname === '/api/register') return handleRegister(req, res), true;
+  if (req.method === 'POST' && parsedUrl.pathname === '/api/forgot-request') return handleForgotRequest(req, res), true;
+  if (req.method === 'POST' && parsedUrl.pathname === '/api/forgot-verify') return handleForgotVerify(req, res), true;
+  if (req.method === 'POST' && parsedUrl.pathname === '/api/forgot-reset') return handleForgotReset(req, res), true;
+  if (req.method === 'POST' && parsedUrl.pathname === '/api/login-guest') return handleGuestLogin(req, res), true;
+
   return false;
 }
 

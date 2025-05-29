@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="../css/modal.css">
   <link rel="stylesheet" href="../css/abrevieri.css">
   <link rel="stylesheet" href="../css/abrevieri-list.css">
+  <link rel="stylesheet" href="../css/profil.css">
+
   
   <!-- Guard pentru verificarea autentificării -->
   <script>
@@ -52,6 +54,8 @@
   <script src="../js/ui-handlers.js"></script>
   <script src="../js/dashboard.js" defer></script>
   <script src="../js/abrevieri-list.js" defer></script>
+  <script src="../js/profil.js" defer></script>
+
 
 </head>
 <body class="dashboard-body">
@@ -263,11 +267,48 @@
       </div>
 
       <div id="profile-section" class="content-section">
-        <div class="section-placeholder">
-          <h3>Profil Utilizator</h3>
-          <p>Aici vei putea gestiona setările contului, schimba parola și preferințele.</p>
+  <div class="profile-card">
+    <h3 class="section-title">Profilul Meu</h3>
+
+    <div class="profile-container">
+      <div class="avatar-box">
+        <img id="profilePicturePreview" src="" alt="Avatar">
+        <input type="file" id="profilePicture" accept="image/*" hidden>
+        <button class="upload-btn">Încarcă Poză</button>
+      </div>
+
+      <div class="profile-info">
+        <div class="profile-row">
+          <label for="firstName">Prenume:</label>
+          <input type="text" id="firstName">
+        </div>
+        <div class="profile-row">
+          <label for="lastName">Nume:</label>
+          <input type="text" id="lastName">
+        </div>
+        <div class="profile-row">
+          <label for="email">Email:</label>
+          <input type="email" id="email">
+        </div>
+        <div class="profile-row">
+          <label for="phone">Telefon:</label>
+          <input type="tel" id="phone">
         </div>
       </div>
+    </div>
+
+    <div class="about-card">
+      <div class="about-header">
+        <h4>Despre tine:</h4>
+        <button id="editAboutBtn" class="edit-btn">Editează</button>
+      </div>
+      <textarea id="about" readonly></textarea>
+    </div>
+
+    <button id="saveProfileBtn" class="edit-btn" style="margin-top: 20px;">Salvează</button>
+  </div>
+</div>
+
     </div>
   </div>
 </body>
