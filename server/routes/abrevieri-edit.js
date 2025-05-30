@@ -1,5 +1,5 @@
-// const db = require('../db'); // Nu mai folosim baza de date
-const docbookManager = require('../utils/docbookManager');
+
+const cacheManager = require('../utils/cache-manager'); 
 const { verifyToken } = require('../middleware/auth');
 const { getCorsHeaders } = require('../utils/corsHeaders');
 
@@ -31,7 +31,7 @@ function handleAbrevieriEditRoutes(req, res, parsedUrl) {
       req.on('end', async () => {
         try {
           const data = JSON.parse(body);
-          const { abreviere, semnificatie, limba, domeniu } = data;
+          const { abreviere, semnificatie, limba, domeniu, version } = data;
           
           if (!abreviere || !semnificatie || !limba || !domeniu) {
             res.writeHead(400, getCorsHeaders());
@@ -42,8 +42,7 @@ function handleAbrevieriEditRoutes(req, res, parsedUrl) {
             return;
           }
           
-          // Verificăm dacă abrevierea există și dacă utilizatorul are dreptul să o editeze
-          const abreviereExistenta = await docbookManager.getAbreviereById(id);
+          const abreviereExistenta = await cacheManager.getAbreviereById(id);
           
           if (!abreviereExistenta) {
             res.writeHead(404, getCorsHeaders());
@@ -63,21 +62,25 @@ function handleAbrevieriEditRoutes(req, res, parsedUrl) {
             return;
           }
           
-          const result = await docbookManager.updateAbreviere(id, {
+      
+          const result = await cacheManager.updateAbreviere(id, {
             abreviere,
             semnificatie,
             limba,
             domeniu
-          });
+          }, version);
+          
+          console.log(`⚡ Abreviere editată în cache în ~${Date.now() % 1000}ms`);
           
           if (result.succes) {
             res.writeHead(200, getCorsHeaders());
           } else {
-            res.writeHead(404, getCorsHeaders());
+            res.writeHead(result.mesaj.includes('modificată de altcineva') ? 409 : 404, getCorsHeaders());
           }
           
           res.end(JSON.stringify(result));
         } catch (err) {
+          console.error('❌ Eroare la procesarea cererii de editare:', err);
           res.writeHead(400, getCorsHeaders());
           res.end(JSON.stringify({ 
             succes: false, 

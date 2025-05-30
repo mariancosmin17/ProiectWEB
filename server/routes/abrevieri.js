@@ -1,4 +1,5 @@
-const docbookManager = require('../utils/docbookManager');
+
+const cacheManager = require('../utils/cache-manager'); 
 const { verifyToken } = require('../middleware/auth');
 const { getCorsHeaders } = require('../utils/corsHeaders');
 
@@ -10,16 +11,18 @@ function handleAbrevieriRoutes(req, res, parsedUrl) {
         
         if (decoded.role !== 'admin' && decoded.role !== 'guest') {
           
-          abrevieri = await docbookManager.getAbrevieriByAutor(decoded.username);
+          abrevieri = await cacheManager.getAbrevieriByAutor(decoded.username);
         } else {
-        
-          abrevieri = await docbookManager.getAbrevieri();
+          
+          abrevieri = await cacheManager.getAbrevieri();
         }
+        
+        console.log(`⚡ Abrevieri încărcate din cache în ~${Date.now() % 1000}ms`);
         
         res.writeHead(200, getCorsHeaders());
         res.end(JSON.stringify(abrevieri));
       } catch (error) {
-        console.error('Eroare la obținerea abrevierilor:', error);
+        console.error('❌ Eroare la obținerea abrevierilor din cache:', error);
         res.writeHead(500, getCorsHeaders());
         res.end(JSON.stringify({ error: 'Eroare la obținerea abrevierilor' }));
       }
@@ -30,12 +33,14 @@ function handleAbrevieriRoutes(req, res, parsedUrl) {
   else if (req.method === 'GET' && parsedUrl.pathname === '/api/toate-abrevierile') {
     verifyToken(req, res, async (decoded) => {
       try {
-        const abrevieri = await docbookManager.getAbrevieri();
+        const abrevieri = await cacheManager.getAbrevieri();
+        
+        console.log(`⚡ Toate abrevierile încărcate din cache în ~${Date.now() % 1000}ms`);
         
         res.writeHead(200, getCorsHeaders());
         res.end(JSON.stringify(abrevieri));
       } catch (error) {
-        console.error('Eroare la obținerea tuturor abrevierilor:', error);
+        console.error('❌ Eroare la obținerea tuturor abrevierilor din cache:', error);
         res.writeHead(500, getCorsHeaders());
         res.end(JSON.stringify({ error: 'Eroare la obținerea abrevierilor' }));
       }
@@ -71,13 +76,16 @@ function handleAbrevieriRoutes(req, res, parsedUrl) {
           }
           
           const autor = decoded.username || 'necunoscut';
-          const result = await docbookManager.addAbreviere({
+          
+          const result = await cacheManager.addAbreviere({
             abreviere, 
             semnificatie, 
             limba, 
             domeniu, 
             autor
           });
+          
+          console.log(`⚡ Abreviere adăugată în cache în ~${Date.now() % 1000}ms`);
           
           if (result.succes) {
             res.writeHead(201, getCorsHeaders());
@@ -87,6 +95,7 @@ function handleAbrevieriRoutes(req, res, parsedUrl) {
           
           res.end(JSON.stringify(result));
         } catch (err) {
+          console.error('❌ Eroare la procesarea cererii de adăugare:', err);
           res.writeHead(400, getCorsHeaders());
           res.end(JSON.stringify({ 
             succes: false, 

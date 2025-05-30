@@ -1,4 +1,4 @@
-const docbookManager = require('../utils/docbookManager');
+const cacheManager = require('../utils/cache-manager'); 
 const { verifyToken } = require('../middleware/auth');
 const { getCorsHeaders } = require('../utils/corsHeaders');
 
@@ -26,7 +26,8 @@ function handleAbrevieriDeleteRoutes(req, res, parsedUrl) {
       }
       
       try {
-        const abreviere = await docbookManager.getAbreviereById(id);
+    
+        const abreviere = await cacheManager.getAbreviereById(id);
         
         if (!abreviere) {
           res.writeHead(404, getCorsHeaders());
@@ -46,7 +47,10 @@ function handleAbrevieriDeleteRoutes(req, res, parsedUrl) {
           return;
         }
         
-        const result = await docbookManager.deleteAbreviere(id);
+      
+        const result = await cacheManager.deleteAbreviere(id);
+        
+        console.log(`⚡ Abreviere ștearsă din cache în ~${Date.now() % 1000}ms`);
         
         if (result.succes) {
           res.writeHead(200, getCorsHeaders());
@@ -56,7 +60,7 @@ function handleAbrevieriDeleteRoutes(req, res, parsedUrl) {
         
         res.end(JSON.stringify(result));
       } catch (error) {
-        console.error('Eroare la ștergerea abrevierii:', error);
+        console.error('❌ Eroare la ștergerea abrevierii din cache:', error);
         res.writeHead(500, getCorsHeaders());
         res.end(JSON.stringify({ 
           succes: false, 
@@ -66,6 +70,7 @@ function handleAbrevieriDeleteRoutes(req, res, parsedUrl) {
     });
     return true;
   }
+  
   return false;
 }
 

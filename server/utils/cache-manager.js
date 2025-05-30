@@ -1,12 +1,10 @@
 const { db } = require('./database-schema');
 const { promisify } = require('util');
 
-// Transformăm operațiunile SQLite în promisiuni
 const dbGet = promisify(db.get.bind(db));
 const dbAll = promisify(db.all.bind(db));
 const dbRun = promisify(db.run.bind(db));
 
-// Adaugă o înregistrare în log-ul de sincronizare
 async function addSyncLog(operation, recordId = null, error = null) {
   try {
     await dbRun(`
@@ -18,7 +16,6 @@ async function addSyncLog(operation, recordId = null, error = null) {
   }
 }
 
-// Obține toate abrevierile (foarte rapid din baza de date)
 async function getAbrevieri() {
   try {
     const abrevieri = await dbAll(`
@@ -27,7 +24,6 @@ async function getAbrevieri() {
       ORDER BY id ASC
     `);
     
-    // Convertește în formatul așteptat
     return abrevieri.map(row => ({
       id: row.id.toString(),
       abreviere: row.abreviere,
@@ -44,7 +40,6 @@ async function getAbrevieri() {
   }
 }
 
-// Obține o abreviere după ID
 async function getAbreviereById(id) {
   try {
     const abreviere = await dbGet(`
@@ -71,21 +66,18 @@ async function getAbreviereById(id) {
   }
 }
 
-// Adaugă o abreviere nouă
 async function addAbreviere(abreviereData) {
   try {
     const { abreviere, semnificatie, limba, domeniu, autor } = abreviereData;
     
-    // Validare
+    
     if (!abreviere || !semnificatie || !limba || !domeniu) {
       throw new Error('Toate câmpurile sunt obligatorii!');
     }
     
-    // Obține următorul ID disponibil
     const result = await dbGet('SELECT MAX(id) as maxId FROM abrevieri');
     const newId = (result.maxId || 0) + 1;
     
-    // Inserează în baza de date
     await dbRun(`
       INSERT INTO abrevieri (
         id, abreviere, semnificatie, limba, domeniu, autor, data_adaugare, updated_at
@@ -100,7 +92,6 @@ async function addAbreviere(abreviereData) {
       new Date().toISOString().split('T')[0]
     ]);
     
-    // Adaugă în log pentru sincronizare cu XML
     await addSyncLog('CREATE', newId);
     
     console.log(`✅ Abreviere "${abreviere}" adăugată în cache cu ID ${newId}`);
@@ -121,17 +112,14 @@ async function addAbreviere(abreviereData) {
   }
 }
 
-// Actualizează o abreviere (cu optimistic locking)
 async function updateAbreviere(id, abreviereData, expectedVersion = null) {
   try {
     const { abreviere, semnificatie, limba, domeniu } = abreviereData;
     
-    // Validare
     if (!abreviere || !semnificatie || !limba || !domeniu) {
       throw new Error('Toate câmpurile sunt obligatorii!');
     }
     
-    // Verifică dacă abrevierea există
     const existing = await getAbreviereById(id);
     if (!existing) {
       return { 
@@ -140,7 +128,6 @@ async function updateAbreviere(id, abreviereData, expectedVersion = null) {
       };
     }
     
-    // Optimistic locking (dacă este specificată versiunea)
     let updateQuery = `
       UPDATE abrevieri 
       SET abreviere = ?, semnificatie = ?, limba = ?, domeniu = ?, 
@@ -170,7 +157,6 @@ async function updateAbreviere(id, abreviereData, expectedVersion = null) {
       }
     }
     
-    // Adaugă în log pentru sincronizare
     await addSyncLog('UPDATE', parseInt(id));
     
     console.log(`✅ Abreviere cu ID ${id} actualizată în cache`);
@@ -190,10 +176,9 @@ async function updateAbreviere(id, abreviereData, expectedVersion = null) {
   }
 }
 
-// Șterge o abreviere
 async function deleteAbreviere(id) {
   try {
-    // Verifică dacă abrevierea există
+    
     const existing = await getAbreviereById(id);
     if (!existing) {
       return { 
@@ -202,7 +187,6 @@ async function deleteAbreviere(id) {
       };
     }
     
-    // Șterge din baza de date
     const result = await dbRun('DELETE FROM abrevieri WHERE id = ?', [parseInt(id)]);
     
     if (result.changes === 0) {
@@ -211,8 +195,7 @@ async function deleteAbreviere(id) {
         mesaj: 'Abrevierea nu a fost găsită.' 
       };
     }
-    
-    // Adaugă în log pentru sincronizare
+
     await addSyncLog('DELETE', parseInt(id));
     
     console.log(`✅ Abreviere cu ID ${id} ștearsă din cache`);
@@ -232,7 +215,6 @@ async function deleteAbreviere(id) {
   }
 }
 
-// Filtrează abrevierile după autor (foarte rapid cu index)
 async function getAbrevieriByAutor(autor) {
   try {
     const abrevieri = await dbAll(`
@@ -258,7 +240,6 @@ async function getAbrevieriByAutor(autor) {
   }
 }
 
-// Căutare rapidă în abrevieri
 async function searchAbrevieri(searchTerm) {
   try {
     const abrevieri = await dbAll(`
