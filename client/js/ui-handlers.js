@@ -29,6 +29,7 @@ function editAbreviere(abreviere) {
       <span class="close-modal">&times;</span>
     </div>
     <form id="editForm">
+    <input type="hidden" id="edit-version" value="${abreviere.version || 1}">
       <div>
         <label for="edit-abreviere">Abreviere:</label>
         <input type="text" id="edit-abreviere" value="${abreviere.abreviere}" required>
@@ -88,7 +89,8 @@ function editAbreviere(abreviere) {
         abreviere: document.getElementById('edit-abreviere').value,
         semnificatie: document.getElementById('edit-semnificatie').value,
         limba: document.getElementById('edit-limba').value,
-        domeniu: document.getElementById('edit-domeniu').value
+        domeniu: document.getElementById('edit-domeniu').value,
+        version: parseInt(document.getElementById('edit-version').value)
       };
       
       const result = await abrevieriService.updateAbreviere(abreviere.id, updatedData);
@@ -104,7 +106,12 @@ function editAbreviere(abreviere) {
       } else {
         mesajElement.textContent = result.mesaj || 'A apărut o eroare!';
         mesajElement.style.color = 'red';
+        
+        if (result.mesaj && result.mesaj.includes('modificată de altcineva')) {
+    mesajElement.innerHTML = result.mesaj + '<br><small>Închide și deschide din nou editarea pentru versiunea actualizată.</small>';
       }
+    
+    }
     } catch (err) {
       console.error('Eroare la actualizarea abrevierii:', err);
       mesajElement.textContent = 'Eroare la comunicarea cu serverul!';

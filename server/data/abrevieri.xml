@@ -111,4 +111,14 @@
       <date>2025-05-27</date>
     </glossdef>
   </glossentry>
+  <glossentry xml:id="12">
+    <glossterm>BMW</glossterm>
+    <glossdef>
+      <para>Bemveu</para>
+      <remark>Limba: Romana</remark>
+      <remark>Domeniu: Automobile</remark>
+      <remark>Autor: cosmin</remark>
+      <date>2025-05-30</date>
+    </glossdef>
+  </glossentry>
 </glossary>
