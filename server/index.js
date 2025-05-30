@@ -1,3 +1,4 @@
+require('./utils/cache-manager');
 const http = require('http');
 const url = require('url');
 const { PORT } = require('./config');

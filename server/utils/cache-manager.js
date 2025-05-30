@@ -265,6 +265,19 @@ async function searchAbrevieri(searchTerm) {
   }
 }
 
+let syncStarted = false;
+
+function startAutoSync() {
+  if (syncStarted) return;
+  syncStarted = true;
+  
+  console.log('🚀 Pornesc sincronizarea automată cache → XML...');
+  
+  const syncManager = require('./sync-manager');
+}
+
+startAutoSync();
+
 module.exports = {
   getAbrevieri,
   getAbreviereById,
