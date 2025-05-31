@@ -111,4 +111,34 @@
       <date>2025-05-31</date>
     </glossdef>
   </glossentry>
+  <glossentry xml:id="20">
+    <glossterm>PC</glossterm>
+    <glossdef>
+      <para>Calculator</para>
+      <remark>Limba: Romana</remark>
+      <remark>Domeniu: IT</remark>
+      <remark>Autor: VladNastasa67</remark>
+      <date>2025-05-31</date>
+    </glossdef>
+  </glossentry>
+  <glossentry xml:id="21">
+    <glossterm>PS</glossterm>
+    <glossdef>
+      <para>PlayStation</para>
+      <remark>Limba: Romana</remark>
+      <remark>Domeniu: IT</remark>
+      <remark>Autor: VladNastasa67</remark>
+      <date>2025-05-31</date>
+    </glossdef>
+  </glossentry>
+  <glossentry xml:id="22">
+    <glossterm>PC</glossterm>
+    <glossdef>
+      <para>Calculator</para>
+      <remark>Limba: Romana</remark>
+      <remark>Domeniu: IT</remark>
+      <remark>Autor: VladNastasa67</remark>
+      <date>2025-05-31</date>
+    </glossdef>
+  </glossentry>
 </glossary>

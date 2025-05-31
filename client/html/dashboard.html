@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="../css/profil.css">
 <link rel="stylesheet" href="../css/export.css">
 <link rel="stylesheet" href="../css/statistics.css">
+<link rel="stylesheet" href="../css/adaugare-abrevieri.css">
+
   
   <!-- Guard pentru verificarea autentificării -->
   <script>
@@ -165,28 +167,48 @@
 
       <!-- Alte secțiuni -->
       <div id="add-section" class="content-section">
-        <h3>Adaugă Abreviere Nouă</h3>
-        <form id="addForm">
-          <div>
-            <label for="abreviere">Abreviere:</label>
-            <input type="text" id="abreviere" required>
-          </div>
-          <div>
-            <label for="semnificatie">Semnificație:</label>
-            <input type="text" id="semnificatie" required>
-          </div>
-          <div>
-            <label for="limba">Limbă:</label>
-            <input type="text" id="limba" required>
-          </div>
-          <div>
-            <label for="domeniu">Domeniu:</label>
-            <input type="text" id="domeniu" required>
-          </div>
-          <button type="submit">Adaugă</button>
-          <p id="addMesaj" class="mesaj"></p>
-        </form>
+  <div class="add-card">
+    <h3>Adaugă Abreviere Nouă</h3>
+    <form id="addForm">
+      <div class="form-group">
+        <label for="abreviere">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2 2h12v2H2zM2 6h12v2H2zM2 10h12v2H2z"/></svg>
+          Abreviere:
+        </label>
+        <input type="text" id="abreviere" required>
       </div>
+
+      <div class="form-group">
+        <label for="semnificatie">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M4 2h8v2H4zM2 6h12v2H2zM3 10h10v2H3z"/></svg>
+          Semnificație:
+        </label>
+        <input type="text" id="semnificatie" required>
+      </div>
+
+      <div class="form-group">
+        <label for="limba">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm0 14.5A6.5 6.5 0 118 1.5a6.5 6.5 0 010 13z"/></svg>
+          Limbă:
+        </label>
+        <input type="text" id="limba" required>
+      </div>
+
+      <div class="form-group">
+        <label for="domeniu">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M6 0a6 6 0 100 12A6 6 0 006 0zM5 5v2h2V5H5zm6 1a1 1 0 100-2 1 1 0 000 2z"/></svg>
+          Domeniu:
+        </label>
+        <input type="text" id="domeniu" required>
+      </div>
+
+      <button type="submit">Adaugă</button>
+      <p id="addMesaj" class="mesaj"></p>
+    </form>
+  </div>
+</div>
+
+
 
       <div id="list-section" class="content-section">
   <h3>Lista Abrevierilor</h3>
@@ -350,7 +372,8 @@
         </div>
         <div class="profile-row">
           <label for="phone">Telefon:</label>
-          <input type="tel" id="phone">
+          <input type="text" id="phone" maxlength="10" pattern="\d{0,10}" title="Introdu un numar de telefon valid" />
+
         </div>
       </div>
     </div>

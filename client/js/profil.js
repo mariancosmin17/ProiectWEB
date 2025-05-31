@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const uploadBtn = document.querySelector('.upload-btn');
   const aboutTextarea = document.getElementById('about');
   const editAboutBtn = document.getElementById('editAboutBtn');
+  const telefonInput = document.getElementById("phone");
   const saveProfileBtn = document.getElementById('saveProfileBtn');
 
   const token = localStorage.getItem('jwt');
@@ -11,9 +12,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const parsed = token ? parseJwt(token) : null;
   console.log('JWT:', token);
-console.log('Payload decodat:', parsed);
+  console.log('Payload decodat:', parsed);
 
-
+telefonInput.addEventListener("input", () => {
+    telefonInput.value = telefonInput.value.replace(/\D/g, '');
+    if (telefonInput.value.length > 10) {
+      telefonInput.value = telefonInput.value.slice(0, 10);
+    }
+  });
   if (!parsed?.id) {
     alert('❌ Nu ești autentificat');
     return;
@@ -25,8 +31,8 @@ console.log('Payload decodat:', parsed);
       headers: { 'Authorization': 'Bearer ' + token }
     });
     console.log('RESPONSE status:', res.status);
-const data = await res.json();
-console.log('DATE profil primite:', data);
+    const data = await res.json();
+    console.log('DATE profil primite:', data);
 
 
     document.getElementById('firstName').value = data.firstName || '';
@@ -68,11 +74,17 @@ console.log('DATE profil primite:', data);
 
   // Salvează toate datele
   saveProfileBtn?.addEventListener('click', async () => {
+    if (!/^\d{10}$/.test(telefonInput.value)) {
+      alert("⚠️ Numărul de telefon trebuie să conțină exact 10 cifre.");
+      return;
+    }
+
     const userData = {
       firstName: document.getElementById('firstName')?.value || '',
       lastName: document.getElementById('lastName')?.value || '',
       email: document.getElementById('email')?.value || '',
-      telefon: document.getElementById('phone')?.value || '',
+      telefon: telefonInput.value || '',
+
       about: aboutTextarea.value || '',
       pozaProfil: profilePicturePreview?.src || ''
     };
