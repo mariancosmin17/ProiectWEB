@@ -21,7 +21,7 @@ function handleExportRoutes(req, res, parsedUrl) {
         }
       } catch (error) {
         res.writeHead(500, getCorsHeaders());
-        res.end(JSON.stringify({ error: 'Eroare la export HTML' }));
+        res.end(JSON.stringify({ error: 'Eroare la export HTML!' }));
       }
     });
     return true;
