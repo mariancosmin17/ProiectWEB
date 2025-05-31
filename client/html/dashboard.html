@@ -253,11 +253,34 @@
 </div>
 
       <div id="export-section" class="content-section">
-        <div class="section-placeholder">
-          <h3>Export Date</h3>
-          <p>Aici vei putea exporta datele în diferite formate (CSV, JSON, PDF).</p>
-        </div>
+  <h3>Export Abrevieri</h3>
+  
+  <div class="export-container">
+    <div class="export-option">
+      <div class="export-info">
+        <h4>📄 Export HTML</h4>
+        <p>Descarcă abrevierile în format HTML cu lista de definiții (&lt;dt&gt;&lt;dd&gt;)</p>
       </div>
+      <button id="export-html-btn" class="export-btn">
+        Descarcă HTML
+      </button>
+    </div>
+    
+    <div class="export-option">
+      <div class="export-info">
+        <h4>📝 Export Markdown</h4>
+        <p>Descarcă abrevierile în format Markdown pentru documentație</p>
+      </div>
+      <button id="export-markdown-btn" class="export-btn">
+        Descarcă Markdown
+      </button>
+    </div>
+    
+    <div id="export-status" class="export-status hidden">
+      <p id="export-message"></p>
+    </div>
+  </div>
+</div>
 
       <div id="statistics-section" class="content-section">
         <div class="section-placeholder">
