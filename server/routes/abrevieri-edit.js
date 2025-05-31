@@ -75,7 +75,7 @@ function handleAbrevieriEditRoutes(req, res, parsedUrl) {
           if (result.succes) {
             res.writeHead(200, getCorsHeaders());
           } else {
-            res.writeHead(result.mesaj.includes('modificată de altcineva') ? 409 : 404, getCorsHeaders());
+            res.writeHead(result.mesaj && result.mesaj.includes('modificată de altcineva') ? 409 : 404, getCorsHeaders());
           }
           
           res.end(JSON.stringify(result));

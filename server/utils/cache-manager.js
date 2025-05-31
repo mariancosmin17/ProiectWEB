@@ -141,21 +141,7 @@ async function updateAbreviere(id, abreviereData, expectedVersion = null) {
       updateParams.push(expectedVersion);
     }
     
-    const result = await dbRun(updateQuery, updateParams);
-    
-    if (result.changes === 0) {
-      if (expectedVersion !== null) {
-        return {
-          succes: false,
-          mesaj: 'Abrevierea a fost modificată de altcineva. Te rog reîmprospătează pagina.'
-        };
-      } else {
-        return {
-          succes: false,
-          mesaj: 'Abrevierea nu a fost găsită.'
-        };
-      }
-    }
+    await dbRun(updateQuery, updateParams);
     
     await addSyncLog('UPDATE', parseInt(id));
     
@@ -178,8 +164,8 @@ async function updateAbreviere(id, abreviereData, expectedVersion = null) {
 
 async function deleteAbreviere(id) {
   try {
-    
     const existing = await getAbreviereById(id);
+    
     if (!existing) {
       return { 
         succes: false, 
@@ -187,18 +173,18 @@ async function deleteAbreviere(id) {
       };
     }
     
-    const result = await dbRun('DELETE FROM abrevieri WHERE id = ?', [parseInt(id)]);
-    
-    if (result.changes === 0) {
+    await dbRun('DELETE FROM abrevieri WHERE id = ?', [parseInt(id)]);
+
+    const stillExists = await getAbreviereById(id);
+
+    if (stillExists) {
       return { 
         succes: false, 
-        mesaj: 'Abrevierea nu a fost găsită.' 
+        mesaj: 'Eroare la ștergerea abrevierii.' 
       };
     }
-
-    await addSyncLog('DELETE', parseInt(id));
     
-    console.log(`✅ Abreviere cu ID ${id} ștearsă din cache`);
+    await addSyncLog('DELETE', parseInt(id));
     
     return { 
       succes: true, 

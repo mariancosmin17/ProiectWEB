@@ -1,46 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glossary xmlns="http://docbook.org/ns/docbook" version="5.0">
   <title>Glosar de Abrevieri</title>
-  <glossentry xml:id="1">
-    <glossterm>HTML</glossterm>
-    <glossdef>
-      <para>Hyper Text Markup Language</para>
-      <remark>Limba: Romana</remark>
-      <remark>Domeniu: Informatica</remark>
-      <remark>Autor: cosmin</remark>
-      <date>2025-05-27</date>
-    </glossdef>
-  </glossentry>
-  <glossentry xml:id="2">
-    <glossterm>Remus</glossterm>
-    <glossdef>
-      <para>dsadd</para>
-      <remark>Limba: sadasd</remark>
-      <remark>Domeniu: dsada</remark>
-      <remark>Autor: cosmin</remark>
-      <date>2025-05-27</date>
-    </glossdef>
-  </glossentry>
-  <glossentry xml:id="3">
-    <glossterm>Youtube</glossterm>
-    <glossdef>
-      <para>dsdas</para>
-      <remark>Limba: dasdasd</remark>
-      <remark>Domeniu: asd</remark>
-      <remark>Autor: cosmin</remark>
-      <date>2025-05-27</date>
-    </glossdef>
-  </glossentry>
-  <glossentry xml:id="4">
-    <glossterm>SDasd</glossterm>
-    <glossdef>
-      <para>asdasdasd</para>
-      <remark>Limba: sadas</remark>
-      <remark>Domeniu: dasdasd</remark>
-      <remark>Autor: cosmin</remark>
-      <date>2025-05-27</date>
-    </glossdef>
-  </glossentry>
   <glossentry xml:id="5">
     <glossterm>cvxc</glossterm>
     <glossdef>
@@ -111,14 +71,44 @@
       <date>2025-05-27</date>
     </glossdef>
   </glossentry>
-  <glossentry xml:id="12">
-    <glossterm>BMW</glossterm>
+  <glossentry xml:id="16">
+    <glossterm>fdar</glossterm>
     <glossdef>
-      <para>Bemveu</para>
-      <remark>Limba: Romana</remark>
-      <remark>Domeniu: Automobile</remark>
+      <para>df</para>
+      <remark>Limba: dfd</remark>
+      <remark>Domeniu: fd</remark>
       <remark>Autor: cosmin</remark>
-      <date>2025-05-30</date>
+      <date>2025-05-31</date>
+    </glossdef>
+  </glossentry>
+  <glossentry xml:id="17">
+    <glossterm>dfgffgf</glossterm>
+    <glossdef>
+      <para>dfd</para>
+      <remark>Limba: fdf</remark>
+      <remark>Domeniu: ffdf</remark>
+      <remark>Autor: cosmin</remark>
+      <date>2025-05-31</date>
+    </glossdef>
+  </glossentry>
+  <glossentry xml:id="18">
+    <glossterm>fdf</glossterm>
+    <glossdef>
+      <para>df</para>
+      <remark>Limba: dfdf</remark>
+      <remark>Domeniu: df</remark>
+      <remark>Autor: cosmin</remark>
+      <date>2025-05-31</date>
+    </glossdef>
+  </glossentry>
+  <glossentry xml:id="19">
+    <glossterm>df</glossterm>
+    <glossdef>
+      <para>dfdf</para>
+      <remark>Limba: df</remark>
+      <remark>Domeniu: d</remark>
+      <remark>Autor: cosmin</remark>
+      <date>2025-05-31</date>
     </glossdef>
   </glossentry>
 </glossary>

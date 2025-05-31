@@ -62,6 +62,52 @@ function createDomeniiChart(domeniiData) {
   });
 }
 
-function exportStats(format) {
-  console.log(`Export statistici în format ${format} - va fi implementat în etapa următoare`);
+async function exportStats(format) {
+  const token = localStorage.getItem('jwt');
+  if (!token) return showStatsStatus('Te rog să te autentifici mai întâi', false);
+  
+  const button = document.getElementById(`export-stats-${format}`);
+  const originalText = button.textContent;
+  
+  try {
+    button.disabled = true;
+    button.textContent = 'Se descarcă...';
+    
+    const response = await fetch(`http://localhost:8080/api/statistics/export/${format}`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    
+    if (response.ok) {
+      downloadFile(await response.blob(), response.headers.get('content-disposition') || `statistici.${format}`);
+      showStatsStatus(`Export ${format.toUpperCase()} descărcat cu succes!`);
+    } else {
+      showStatsStatus(`Eroare la export ${format.toUpperCase()}`, false);
+    }
+  } catch (error) {
+    showStatsStatus(`Eroare la descărcarea ${format.toUpperCase()}`, false);
+  } finally {
+    button.disabled = false;
+    button.textContent = originalText;
+  }
 }
+
+function downloadFile(blob, contentDisposition) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = contentDisposition.split('filename=')[1]?.replace(/"/g, '') || 'statistici';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function showStatsStatus(message, isSuccess = true) {
+  const status = document.getElementById('stats-status');
+  const msg = document.getElementById('stats-message');
+  
+  msg.textContent = message;
+  status.className = `stats-status ${isSuccess ? 'success' : 'error'}`;
+  status.classList.remove('hidden');
+  
+  setTimeout(() => status.classList.add('hidden'), 3000);
+}
+
