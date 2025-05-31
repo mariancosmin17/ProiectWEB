@@ -9,6 +9,7 @@ const { handleAbrevieriDeleteRoutes } = require('./routes/abrevieri-delete');
 const { handleAuthRoutes } = require('./routes/auth');
 const { handleUtilizatoriRoutes } = require('./routes/utilizatori');
 const { handleExportRoutes } = require('./routes/export');
+const { handleStatisticsRoutes } = require('./routes/statistics');
 
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
@@ -36,6 +37,8 @@ const server = http.createServer((req, res) => {
   return;
 }
 if (handleExportRoutes(req, res, parsedUrl)) return;
+
+if (handleStatisticsRoutes(req, res, parsedUrl)) return;
 
   res.writeHead(404, {
     'Content-Type': 'application/json',
