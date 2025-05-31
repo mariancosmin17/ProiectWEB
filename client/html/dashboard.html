@@ -56,6 +56,7 @@
   <script src="../js/abrevieri-list.js" defer></script>
   <script src="../js/profil.js" defer></script>
 <script src="../js/export.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 <body class="dashboard-body">
@@ -283,11 +284,43 @@
 </div>
 
       <div id="statistics-section" class="content-section">
-        <div class="section-placeholder">
-          <h3>Statistici Detaliate</h3>
-          <p>Aici vor fi afișate grafice și statistici detaliate despre abrevieri.</p>
-        </div>
+  <h3>Statistici Abrevieri</h3>
+  
+  <div class="stats-container">
+    <div class="general-stats">
+      <div class="stat-item">
+        <div class="stat-number" id="stat-total">0</div>
+        <div class="stat-label">Total Abrevieri</div>
       </div>
+      <div class="stat-item">
+        <div class="stat-number" id="stat-autori">0</div>
+        <div class="stat-label">Total Autori</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="stat-domenii">0</div>
+        <div class="stat-label">Total Domenii</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="stat-limbi">0</div>
+        <div class="stat-label">Total Limbi</div>
+      </div>
+    </div>
+    
+    <div class="chart-container">
+      <h4>Distribuția pe Domenii</h4>
+      <canvas id="domenii-chart"></canvas>
+    </div>
+    
+    <div class="stats-export">
+      <button id="export-stats-csv" class="export-btn">Export CSV</button>
+      <button id="export-stats-pdf" class="export-btn">Export PDF</button>
+    </div>
+    
+    <div id="stats-status" class="stats-status hidden">
+      <p id="stats-message"></p>
+    </div>
+  </div>
+</div>
 
       <div id="profile-section" class="content-section">
   <div class="profile-card">
