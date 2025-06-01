@@ -17,6 +17,46 @@ const abrevieriListState = {
   }
 };
 
+function viewAbreviere(abreviere) {
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+  modal.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>📖 ${abreviere.abreviere}</h3>
+        <span class="close-modal">&times;</span>
+      </div>
+      <div style="margin: 10px 0; padding: 8px 0; border-bottom: 1px solid #eee;">
+        <strong style="display: inline-block; width: 100px;">Înseamnă:</strong> ${abreviere.semnificatie}
+      </div>
+      <div style="margin: 10px 0; padding: 8px 0; border-bottom: 1px solid #eee;">
+        <strong style="display: inline-block; width: 100px;">Limba:</strong> ${abreviere.limba}
+      </div>
+      <div style="margin: 10px 0; padding: 8px 0; border-bottom: 1px solid #eee;">
+        <strong style="display: inline-block; width: 100px;">Domeniu:</strong> ${abreviere.domeniu}
+      </div>
+      <div style="margin: 10px 0; padding: 8px 0; border-bottom: 1px solid #eee;">
+        <strong style="display: inline-block; width: 100px;">Autor:</strong> ${abreviere.autor || 'necunoscut'}
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  modal.style.display = 'flex';
+  modal.style.opacity = '1';
+  
+  modal.querySelector('.close-modal').onclick = () => document.body.removeChild(modal);
+  modal.onclick = (e) => e.target === modal && document.body.removeChild(modal);
+  
+  fetch(`http://localhost:8080/api/abrevieri/${abreviere.id}/view`, {
+  method: 'POST',
+  headers: { 
+    'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+    'Content-Type': 'application/json'
+  }
+}).catch(err => console.error('Eroare views:', err));
+}
+
 async function loadAllAbrevieri() {
   try {
     const token = localStorage.getItem('jwt');
@@ -280,6 +320,12 @@ function renderAbrevieriList() {
       <div class="actions-col abrev-actions"></div>
     `;
     
+    li.onclick = (e) => {
+  if (!e.target.closest('.abrev-actions')) {
+    viewAbreviere(entry);
+  }
+};
+
     if (!isGuest && (entry.autor === decoded.username || decoded.role === 'admin')) {
       const actionsCol = li.querySelector('.abrev-actions');
       
