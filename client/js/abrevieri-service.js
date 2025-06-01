@@ -103,7 +103,6 @@ async function deleteAbreviere(id) {
   }
 }
 
-// Export pentru a fi folosit în alte fișiere
 window.abrevieriService = {
   loadAbrevieri,
   addAbreviere,

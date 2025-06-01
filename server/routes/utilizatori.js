@@ -1,11 +1,9 @@
-// routes/utilizatori.js
 const db = require('../db');
 const { getCorsHeaders } = require('../utils/corsHeaders');
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('../config');
 
 function handleUtilizatoriRoutes(req, res, parsedUrl) {
-  // GET utilizator după ID
   if (req.method === 'GET' && parsedUrl.pathname.match(/^\/api\/utilizatori\/\d+$/)) {
     const id = parsedUrl.pathname.split('/').pop();
 
@@ -26,7 +24,6 @@ function handleUtilizatoriRoutes(req, res, parsedUrl) {
     return true;
   }
 
-  // PUT (update profil)
   if (req.method === 'PUT' && parsedUrl.pathname.match(/^\/api\/utilizatori\/\d+$/)) {
     const id = parsedUrl.pathname.split('/').pop();
 
@@ -42,7 +39,6 @@ function handleUtilizatoriRoutes(req, res, parsedUrl) {
         return;
       }
 
-      // Extragem câmpurile din body
       let {
         firstName = '',
         lastName = '',

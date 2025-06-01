@@ -80,7 +80,7 @@
   background: #e0e0e0;
 }
 
-/* Lista completă de abrevieri */
+/* Lista completa de abrevieri */
 .full-list {
   background: white;
   border-radius: 12px;
@@ -122,20 +122,32 @@
 
 /* Coloane în tabel */
 .abrev-col {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   width: 15%;
   padding: 0 10px;
   font-weight: 500;
+  max-width: 200px; 
 }
 
 .semnif-col {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   width: 35%;
   padding: 0 10px;
+  max-width: 200px; 
 }
 
 .meta-col {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   width: 15%;
   padding: 0 10px;
   color: #666;
+  max-width: 200px; 
 }
 
 .actions-col {
@@ -217,7 +229,7 @@
   color: #666;
 }
 
-/* Afișare responsivă */
+/* Afisare responsiva */
 @media (max-width: 900px) {
   .abrev-list-item, .abbreviations-header {
     font-size: 14px;

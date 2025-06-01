@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const isGuest = parsed?.role === 'guest';
 
   if (isGuest) {
-    // Secțiunea ADD - acces restricționat
     const addSection = document.getElementById('add-section');
     if (addSection) {
       addSection.innerHTML = `
@@ -36,7 +35,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
 
-    // Secțiunea PROFIL - acces restricționat
     const profileSection = document.getElementById('profile-section');
     if (profileSection) {
       profileSection.innerHTML = `
@@ -70,30 +68,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     await uiHandlers.renderAbrevieri();
 
-    // 1. Preluăm toate abrevierile existente în sistem pentru a obține toate domeniile
 const statsRes = await fetch('http://localhost:8080/api/statistics', {
   headers: { Authorization: 'Bearer ' + token }
 });
 const statsData = await statsRes.json();
 const domeniiTotale = new Set(statsData.domenii.map(d => d.domeniu));
 
-// 2. Preluăm doar abrevierile utilizatorului curent
 const userAbrevieriRes = await fetch('http://localhost:8080/api/abrevieri', {
   headers: { Authorization: 'Bearer ' + token }
 });
 const userAbrevieri = await userAbrevieriRes.json();
 const domeniiUtilizator = new Set(userAbrevieri.map(ab => ab.domeniu));
 
-// 3. Calculăm procentul
 const acoperire = domeniiTotale.size === 0 ? 0 : Math.round((domeniiUtilizator.size / domeniiTotale.size) * 100);
 
-// 4. Afișăm în dashboard
 const acoperireElem = document.getElementById('coverage-percentage');
 if (acoperireElem) {
   acoperireElem.textContent = `${acoperire}%`;
 }
-
-
     const authButtonsContainer = document.getElementById('auth-buttons');
     if (authButtonsContainer) {
       authButtonsContainer.innerHTML = '';
@@ -114,7 +106,6 @@ if (acoperireElem) {
       }
     }
 
-    // Formular de adăugare funcțional doar dacă nu e guest
     if (!isGuest) {
       const formAdd = document.getElementById('addForm');
       if (formAdd) {
@@ -163,7 +154,6 @@ if (acoperireElem) {
     window.location.href = '../html/login.html';
   }
 
-  // Navigare între secțiuni
   const navLinks = document.querySelectorAll('.nav-link');
   navLinks.forEach(link => {
     link.addEventListener('click', function (e) {

@@ -260,7 +260,6 @@ async function renderAbrevieri() {
   }
 }
 
-// Export pentru a fi folosit în alte fișiere
 window.uiHandlers = {
   updateStatistics,
   editAbreviere,
