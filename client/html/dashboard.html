@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="../css/export.css">
 <link rel="stylesheet" href="../css/statistics.css">
 <link rel="stylesheet" href="../css/clasament.css">
+<link rel="stylesheet" href="../css/adaugare-abrevieri.css">
+
   
   <!-- Guard pentru verificarea autentificării -->
   <script>
@@ -168,28 +170,36 @@
 
       <!-- Alte secțiuni -->
       <div id="add-section" class="content-section">
-        <h3>Adaugă Abreviere Nouă</h3>
-        <form id="addForm">
-          <div>
-            <label for="abreviere">Abreviere:</label>
-            <input type="text" id="abreviere" required>
-          </div>
-          <div>
-            <label for="semnificatie">Semnificație:</label>
-            <input type="text" id="semnificatie" required>
-          </div>
-          <div>
-            <label for="limba">Limbă:</label>
-            <input type="text" id="limba" required>
-          </div>
-          <div>
-            <label for="domeniu">Domeniu:</label>
-            <input type="text" id="domeniu" required>
-          </div>
-          <button type="submit">Adaugă</button>
-          <p id="addMesaj" class="mesaj"></p>
-        </form>
+  <div class="add-card">
+    <h3 class="section-title">Adaugă Abreviere Nouă</h3>
+    <form id="addForm" class="add-form">
+      <div class="form-group">
+        <label for="abreviere">Abreviere:</label>
+        <input type="text" id="abreviere" required>
       </div>
+
+      <div class="form-group">
+        <label for="semnificatie">Semnificație:</label>
+        <input type="text" id="semnificatie" required>
+      </div>
+
+      <div class="form-group">
+        <label for="limba">Limbă:</label>
+        <input type="text" id="limba" required>
+      </div>
+
+      <div class="form-group">
+        <label for="domeniu">Domeniu:</label>
+        <input type="text" id="domeniu" required>
+      </div>
+
+      <button type="submit" class="submit-btn">Adaugă</button>
+      <p id="addMesaj" class="mesaj"></p>
+    </form>
+  </div>
+</div>
+
+
 
       <div id="list-section" class="content-section">
   <h3>Lista Abrevierilor</h3>

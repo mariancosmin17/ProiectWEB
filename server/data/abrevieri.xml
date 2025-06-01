@@ -111,4 +111,64 @@
       <date>2025-05-31</date>
     </glossdef>
   </glossentry>
+  <glossentry xml:id="20">
+    <glossterm>PC</glossterm>
+    <glossdef>
+      <para>Calculator</para>
+      <remark>Limba: Romana</remark>
+      <remark>Domeniu: IT</remark>
+      <remark>Autor: VladNastasa67</remark>
+      <date>2025-06-01</date>
+    </glossdef>
+  </glossentry>
+  <glossentry xml:id="21">
+    <glossterm>ND</glossterm>
+    <glossdef>
+      <para>Nicusor Dan</para>
+      <remark>Limba: Romana</remark>
+      <remark>Domeniu: Politica</remark>
+      <remark>Autor: VladNastasa67</remark>
+      <date>2025-06-01</date>
+    </glossdef>
+  </glossentry>
+  <glossentry xml:id="22">
+    <glossterm>FB</glossterm>
+    <glossdef>
+      <para>Foarte Bine</para>
+      <remark>Limba: Romana</remark>
+      <remark>Domeniu: Prescurtare</remark>
+      <remark>Autor: VladNastasa67</remark>
+      <date>2025-06-01</date>
+    </glossdef>
+  </glossentry>
+  <glossentry xml:id="23">
+    <glossterm>S</glossterm>
+    <glossdef>
+      <para>Suficient</para>
+      <remark>Limba: Romana</remark>
+      <remark>Domeniu: Note</remark>
+      <remark>Autor: VladNastasa67</remark>
+      <date>2025-06-01</date>
+    </glossdef>
+  </glossentry>
+  <glossentry xml:id="24">
+    <glossterm>IN</glossterm>
+    <glossdef>
+      <para>Insuficient</para>
+      <remark>Limba: Romana</remark>
+      <remark>Domeniu: Note</remark>
+      <remark>Autor: VladNastasa67</remark>
+      <date>2025-06-01</date>
+    </glossdef>
+  </glossentry>
+  <glossentry xml:id="25">
+    <glossterm>PC</glossterm>
+    <glossdef>
+      <para>Calculator</para>
+      <remark>Limba: Romana</remark>
+      <remark>Domeniu: IT</remark>
+      <remark>Autor: VladNastasa67</remark>
+      <date>2025-06-01</date>
+    </glossdef>
+  </glossentry>
 </glossary>

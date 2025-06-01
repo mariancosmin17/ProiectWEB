@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const uploadBtn = document.querySelector('.upload-btn');
   const aboutTextarea = document.getElementById('about');
   const editAboutBtn = document.getElementById('editAboutBtn');
+  const telefonInput = document.getElementById("phone");
   const saveProfileBtn = document.getElementById('saveProfileBtn');
 
   const token = localStorage.getItem('jwt');
@@ -11,9 +12,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const parsed = token ? parseJwt(token) : null;
   console.log('JWT:', token);
-console.log('Payload decodat:', parsed);
+  console.log('Payload decodat:', parsed);
 
-
+  telefonInput.addEventListener("input", () => {
+    telefonInput.value = telefonInput.value.replace(/\D/g, '');
+    if (telefonInput.value.length > 10) {
+      telefonInput.value = telefonInput.value.slice(0, 10);
+    }
+  });
   if (!parsed?.id) {
     alert('❌ Nu ești autentificat');
     return;
@@ -25,8 +31,8 @@ console.log('Payload decodat:', parsed);
       headers: { 'Authorization': 'Bearer ' + token }
     });
     console.log('RESPONSE status:', res.status);
-const data = await res.json();
-console.log('DATE profil primite:', data);
+    const data = await res.json();
+    console.log('DATE profil primite:', data);
 
 
     document.getElementById('firstName').value = data.firstName || '';
@@ -66,23 +72,33 @@ console.log('DATE profil primite:', data);
     aboutTextarea.focus();
   });
 
-  // Salvează toate datele
-  saveProfileBtn?.addEventListener('click', async () => {
-    const userData = {
-      firstName: document.getElementById('firstName')?.value || '',
-      lastName: document.getElementById('lastName')?.value || '',
-      email: document.getElementById('email')?.value || '',
-      telefon: document.getElementById('phone')?.value || '',
-      about: aboutTextarea.value || '',
-      pozaProfil: profilePicturePreview?.src || ''
-    };
+ saveProfileBtn?.addEventListener('click', async () => {
+  const telefon = telefonInput.value;
 
-    const success = await updateProfil(parsed.id, userData);
-    if (success) {
-      alert('✔️ Profil salvat!');
-      aboutTextarea.setAttribute('readonly', true);
-    }
-  });
+  if (!/^07\d{8}$/.test(telefon)) {
+    telefonInput.style.border = '2px solid red';
+    alert("⚠️ Numărul de telefon trebuie să înceapă cu 07 și să conțină exact 10 cifre.");
+    return;
+  } else {
+    telefonInput.style.border = '1px solid #ccc'; // Reset stil
+  }
+
+  const userData = {
+    firstName: document.getElementById('firstName')?.value || '',
+    lastName: document.getElementById('lastName')?.value || '',
+    email: document.getElementById('email')?.value || '',
+    telefon: telefon,
+    about: aboutTextarea.value || '',
+    pozaProfil: profilePicturePreview?.src || ''
+  };
+
+  const success = await updateProfil(parsed.id, userData);
+  if (success) {
+    alert('✔️ Profil salvat!');
+    aboutTextarea.setAttribute('readonly', true);
+  }
+});
+
 
   async function updateProfil(id, userData) {
     try {

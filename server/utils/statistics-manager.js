@@ -46,5 +46,34 @@ async function getAllStats() {
     }))
   };
 }
+async function getUserDomainCoverage(userId) {
+  try {
+    const xml = fs.readFileSync(DOCBOOK_PATH, 'utf8');
+    const entries = [...xml.matchAll(/<glossentry[^>]*>([\s\S]*?)<\/glossentry>/g)];
 
-module.exports = { getAllStats };
+    const totalDomenii = new Set();
+    const domeniiUser = new Set();
+
+    for (const match of entries) {
+      const content = match[1];
+      const domeniu = content.match(/Domeniu: ([^<]*)/)?.[1]?.trim();
+      const autor = content.match(/Autor: ([^<]*)/)?.[1]?.trim();
+
+      if (domeniu) totalDomenii.add(domeniu);
+      if (autor === userId?.toString() && domeniu) domeniiUser.add(domeniu);
+    }
+
+    const total = totalDomenii.size;
+    const user = domeniiUser.size;
+
+    return total > 0 ? ((user / total) * 100).toFixed(1) : '0.0';
+  } catch (error) {
+    console.error('❌ Eroare coverage:', error);
+    return '0.0';
+  }
+}
+
+module.exports = { getAllStats, getUserDomainCoverage };
+
+
+
