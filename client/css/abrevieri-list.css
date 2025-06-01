@@ -121,6 +121,7 @@
 }
 
 /* Coloane în tabel */
+
 .abrev-col {
   overflow: hidden;
   text-overflow: ellipsis;
