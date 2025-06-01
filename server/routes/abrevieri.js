@@ -131,6 +131,21 @@ else if (req.method === 'POST' && parsedUrl.pathname.startsWith('/api/abrevieri/
   return true;
 }
 
+else if (req.method === 'GET' && parsedUrl.pathname === '/api/abrevieri/top10') {
+  verifyToken(req, res, async (decoded) => {
+    try {
+      const top10 = await cacheManager.getTop10();
+      res.writeHead(200, getCorsHeaders());
+      res.end(JSON.stringify(top10));
+    } catch (error) {
+      console.error('❌ Eroare la top 10:', error);
+      res.writeHead(500, getCorsHeaders());
+      res.end(JSON.stringify({ error: 'Eroare server' }));
+    }
+  });
+  return true;
+}
+
   return false;
 }
 

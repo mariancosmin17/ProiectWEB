@@ -294,6 +294,22 @@ async function incrementViews(id) {
   }
 }
 
+async function getTop10() {
+  try {
+    const top = await dbAll(`
+      SELECT abreviere, semnificatie, limba, domeniu, autor, 
+             COALESCE(views_count, 0) as views_count
+      FROM abrevieri 
+      ORDER BY views_count DESC, id ASC 
+      LIMIT 10
+    `);
+    return top;
+  } catch (error) {
+    console.error('❌ Eroare la top 10:', error);
+    return [];
+  }
+}
+
 startAutoSync();
 
 module.exports = {
@@ -305,5 +321,6 @@ module.exports = {
   getAbrevieriByAutor,
   searchAbrevieri,
   addSyncLog,
-  incrementViews
+  incrementViews,
+    getTop10
 };
