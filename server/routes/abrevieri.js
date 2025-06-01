@@ -107,6 +107,30 @@ function handleAbrevieriRoutes(req, res, parsedUrl) {
     return true;
   }
 
+else if (req.method === 'POST' && parsedUrl.pathname.startsWith('/api/abrevieri/') && parsedUrl.pathname.endsWith('/view')) {
+  verifyToken(req, res, async (decoded) => {
+    const id = parseInt(parsedUrl.pathname.split('/')[3]);
+    
+    if (isNaN(id)) {
+      res.writeHead(400, getCorsHeaders());
+      res.end(JSON.stringify({ succes: false, mesaj: 'ID invalid!' }));
+      return;
+    }
+    
+    try {
+      const result = await cacheManager.incrementViews(id);
+      
+      res.writeHead(200, getCorsHeaders());
+      res.end(JSON.stringify(result));
+    } catch (error) {
+      console.error('❌ Eroare la incrementarea vizualizărilor:', error);
+      res.writeHead(500, getCorsHeaders());
+      res.end(JSON.stringify({ succes: false, mesaj: 'Eroare server' }));
+    }
+  });
+  return true;
+}
+
   return false;
 }
 

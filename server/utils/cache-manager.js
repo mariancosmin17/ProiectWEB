@@ -262,6 +262,38 @@ function startAutoSync() {
   const syncManager = require('./sync-manager');
 }
 
+async function incrementViews(id) {
+  try {
+    
+    const existing = await getAbreviereById(id);
+    if (!existing) {
+      return { 
+        succes: false, 
+        mesaj: 'Abrevierea nu a fost găsită.' 
+      };
+    }
+    
+    await dbRun(`
+      UPDATE abrevieri 
+      SET views_count = COALESCE(views_count, 0) + 1 
+      WHERE id = ?
+    `, [parseInt(id)]);
+    
+    await addSyncLog('VIEW', parseInt(id));
+      
+    return { 
+      succes: true, 
+      mesaj: 'Vizualizare înregistrată' 
+    };
+  } catch (error) {
+    console.error(`❌ Eroare la incrementarea views pentru id=${id}:`, error);
+    return { 
+      succes: false, 
+      mesaj: 'Eroare la înregistrarea vizualizării.' 
+    };
+  }
+}
+
 startAutoSync();
 
 module.exports = {
@@ -272,5 +304,6 @@ module.exports = {
   deleteAbreviere,
   getAbrevieriByAutor,
   searchAbrevieri,
-  addSyncLog
+  addSyncLog,
+  incrementViews
 };
