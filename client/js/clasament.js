@@ -28,17 +28,49 @@ function createClassmentModal(htmlContent) {
   
   modal.querySelector('.close-modal').onclick = () => document.body.removeChild(modal);
   modal.onclick = (e) => e.target === modal && document.body.removeChild(modal);
+  
+  return modal;
+}
+
+async function fetchTop10() {
+  const response = await fetch('http://localhost:8080/api/abrevieri/top10', {
+    headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` }
+  });
+  return response.json();
+}
+
+async function updateClassment(modal) {
+  try {
+    const newTop10 = await fetchTop10();
+    const container = modal.querySelector('.clasament-container');
+    
+    if (container) {
+      container.innerHTML = newTop10.map((item, index) => `
+        <div class="clasament-item">
+          <span><strong>${index + 1}.</strong> ${item.abreviere} = ${item.semnificatie}</span>
+          <span class="clasament-badge">${item.views_count} views</span>
+        </div>
+      `).join('');
+    }
+  } catch (error) {
+    console.error('❌ Eroare refresh:', error);
+  }
 }
 
 async function showClassment() {
   try {
-    const response = await fetch('http://localhost:8080/api/abrevieri/top10', {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` }
-    });
-    const top10 = await response.json();
-    
+    const top10 = await fetchTop10();
     const htmlContent = generateClassmentHTML(top10);
-    createClassmentModal(htmlContent);
+    const modal = createClassmentModal(htmlContent);
+    
+    const refreshInterval = setInterval(() => updateClassment(modal), 5000);
+    
+    const closeBtn = modal.querySelector('.close-modal');
+    const originalClose = closeBtn.onclick;
+    closeBtn.onclick = () => {
+      clearInterval(refreshInterval);
+      originalClose();
+    };
     
   } catch (error) {
     console.error('❌ Eroare clasament:', error);
