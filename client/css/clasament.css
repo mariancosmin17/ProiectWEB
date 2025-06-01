@@ -1,0 +1,23 @@
+.clasament-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.clasament-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.clasament-item:last-child {
+  border-bottom: none;
+}
+
+.clasament-badge {
+  background: #0039a6;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+}

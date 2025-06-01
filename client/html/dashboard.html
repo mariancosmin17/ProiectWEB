@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="../css/profil.css">
 <link rel="stylesheet" href="../css/export.css">
 <link rel="stylesheet" href="../css/statistics.css">
+<link rel="stylesheet" href="../css/clasament.css">
   
   <!-- Guard pentru verificarea autentificării -->
   <script>
@@ -59,6 +60,7 @@
 <script src="../js/export.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../js/statistics.js" defer></script>
+<script src="../js/clasament.js" defer></script> 
 
 </head>
 <body class="dashboard-body">
@@ -262,7 +264,7 @@
     <div class="export-option">
       <div class="export-info">
         <h4>📄 Export HTML</h4>
-        <p>Descarcă abrevierile în format HTML cu lista de definiții (&lt;dt&gt;&lt;dd&gt;)</p>
+        <p>Descarcă abrevierile în format HTML</p>
       </div>
       <button id="export-html-btn" class="export-btn">
         Descarcă HTML
@@ -287,7 +289,9 @@
 
       <div id="statistics-section" class="content-section">
   <h3>Statistici Abrevieri</h3>
-  
+  <div style="margin-bottom: 20px; text-align: right;">
+  <button id="vezi-clasament-btn" class="export-btn">🏆 Vezi Clasamentul</button>
+</div>
   <div class="stats-container">
     <div class="general-stats">
       <div class="stat-item">

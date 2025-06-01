@@ -10,6 +10,7 @@ const { handleAuthRoutes } = require('./routes/auth');
 const { handleUtilizatoriRoutes } = require('./routes/utilizatori');
 const { handleExportRoutes } = require('./routes/export');
 const { handleStatisticsRoutes } = require('./routes/statistics');
+const { handleRSSRoutes } = require('./routes/rss');
 
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
@@ -40,6 +41,7 @@ if (handleExportRoutes(req, res, parsedUrl)) return;
 
 if (handleStatisticsRoutes(req, res, parsedUrl)) return;
 
+if (handleRSSRoutes(req, res, parsedUrl)) { return; }
   res.writeHead(404, {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
