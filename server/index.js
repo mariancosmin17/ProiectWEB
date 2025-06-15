@@ -3,7 +3,7 @@ const http = require('http');
 const url = require('url');
 const path = require('path');  
 const fs = require('fs'); 
-const { PORT } = require('./config');
+const PORT = process.env.PORT || 8080;
 const { handleCorsOptions } = require('./utils/corsHeaders');
 const { handleAbrevieriRoutes } = require('./routes/abrevieri');
 const { handleAbrevieriEditRoutes } = require('./routes/abrevieri-edit');
@@ -39,7 +39,7 @@ const server = http.createServer((req, res) => {
       return;
     }
   }
-  
+
   if (handleCorsOptions(req, res)) {
     return;
   }
