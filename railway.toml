@@ -2,4 +2,4 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "cd server && npm run build && npm start"
+startCommand = "cd server && npm install --omit=dev && npm start"
