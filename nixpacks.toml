@@ -1,8 +1,0 @@
-[phases.setup]
-nixPkgs = ['nodejs_18', 'python3', 'gcc', 'gnumake', 'pkg-config']
-
-[phases.install]
-cmds = ['cd server && npm install']
-
-[phases.start]
-cmd = 'cd server && npm start'
