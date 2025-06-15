@@ -28,27 +28,29 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.method === 'GET' && !parsedUrl.pathname.startsWith('/api/')) {
-    let filePath = parsedUrl.pathname;
-    
-    if (filePath === '/') {
-      filePath = '/html/login.html';
-    }
-    
-    const fullPath = path.join(__dirname, '../client', filePath);
-    
-    if (fs.existsSync(fullPath)) {
-      const ext = path.extname(fullPath);
-      const contentType = {
-        '.html': 'text/html; charset=utf-8',
-        '.css': 'text/css',
-        '.js': 'application/javascript'
-      }[ext] || 'text/plain';
-      
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(fs.readFileSync(fullPath));
-      return;
-    }
+  let filePath = parsedUrl.pathname;
+  
+  if (filePath === '/' || filePath === '/index.html') {
+    res.writeHead(302, { 'Location': '/html/login.html' });
+    res.end();
+    return;
   }
+  
+  const fullPath = path.join(__dirname, 'client', filePath);
+  
+  if (fs.existsSync(fullPath)) {
+    const ext = path.extname(fullPath);
+    const contentType = {
+      '.html': 'text/html; charset=utf-8',
+      '.css': 'text/css',
+      '.js': 'application/javascript'
+    }[ext] || 'text/plain';
+    
+    res.writeHead(200, { 'Content-Type': contentType });
+    res.end(fs.readFileSync(fullPath));
+    return;
+  }
+}
 
   if (handleCorsOptions(req, res)) {
     return;

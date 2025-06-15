@@ -8,3 +8,5 @@ README.md
 coverage
 .ds_store
 *.log
+server/node_modules
+package-lock.json
