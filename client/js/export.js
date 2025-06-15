@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
       button.disabled = true;
       button.textContent = 'Se descarcă...';
       
-      const response = await fetch(`http://localhost:8080/api/export/${format}`, {
+      const response = await fetch(`/api/export/${format}`, {
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + token

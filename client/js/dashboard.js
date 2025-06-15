@@ -68,13 +68,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     await uiHandlers.renderAbrevieri();
 
-const statsRes = await fetch('http://localhost:8080/api/statistics', {
+const statsRes = await fetch('/api/statistics', {
   headers: { Authorization: 'Bearer ' + token }
 });
 const statsData = await statsRes.json();
 const domeniiTotale = new Set(statsData.domenii.map(d => d.domeniu));
 
-const userAbrevieriRes = await fetch('http://localhost:8080/api/abrevieri', {
+const userAbrevieriRes = await fetch('/api/abrevieri', {
   headers: { Authorization: 'Bearer ' + token }
 });
 const userAbrevieri = await userAbrevieriRes.json();

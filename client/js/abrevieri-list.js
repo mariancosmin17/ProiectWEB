@@ -48,7 +48,7 @@ function viewAbreviere(abreviere) {
   modal.querySelector('.close-modal').onclick = () => document.body.removeChild(modal);
   modal.onclick = (e) => e.target === modal && document.body.removeChild(modal);
   
-  fetch(`http://localhost:8080/api/abrevieri/${abreviere.id}/view`, {
+  fetch(`/api/abrevieri/${abreviere.id}/view`, {
   method: 'POST',
   headers: { 
     'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
@@ -70,7 +70,7 @@ async function loadAllAbrevieri() {
       'Authorization': 'Bearer ' + token
     };
     
-    const response = await fetch('http://localhost:8080/api/toate-abrevierile', {
+    const response = await fetch('/api/toate-abrevierile', {
       method: 'GET',
       headers: headers
     });

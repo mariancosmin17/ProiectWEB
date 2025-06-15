@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Încărcare date profil
   try {
-    const res = await fetch(`http://localhost:8080/api/utilizatori/${parsed.id}`, {
+    const res = await fetch(`/api/utilizatori/${parsed.id}`, {
       headers: { 'Authorization': 'Bearer ' + token }
     });
     console.log('RESPONSE status:', res.status);
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function updateProfil(id, userData) {
     try {
-      const raspuns = await fetch(`http://localhost:8080/api/utilizatori/${id}`, {
+      const raspuns = await fetch(`/api/utilizatori/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

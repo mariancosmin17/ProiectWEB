@@ -13,7 +13,7 @@ function generateRSSXML(top10) {
   <channel>
     <title>Top 10 Abrevieri Populare - APlace</title>
     <description>Cele mai vizualizate 10 abrevieri</description>
-    <link>http://localhost:8080</link>
+    <link></link>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     ${items}
   </channel>

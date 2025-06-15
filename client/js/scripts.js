@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const username = document.getElementById('username').value;
       const parola = document.getElementById('parola').value;
 
-      const raspuns = await fetch('http://localhost:8080/api/login', {
+      const raspuns = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, parola })
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const username = document.getElementById('username').value;
       const parola = document.getElementById('parola').value;
 
-      const raspuns = await fetch('http://localhost:8080/api/login', {
+      const raspuns = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, parola })
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
   return;
 }
 
-      const raspuns = await fetch('http://localhost:8080/api/register', {
+      const raspuns = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username,email, parola })
@@ -126,7 +126,7 @@ if (forgotForm) {
   return;
 }
 
-    const raspuns = await fetch('http://localhost:8080/api/forgot', {
+    const raspuns = await fetch('/api/forgot', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, parolaNoua })
@@ -150,7 +150,7 @@ if (linkVizitator) {
   linkVizitator.addEventListener('click', async (e) => {
     e.preventDefault(); 
 
-    const raspuns = await fetch('http://localhost:8080/api/login-guest', {
+    const raspuns = await fetch('/api/login-guest', {
       method: 'POST'
     });
 
@@ -186,7 +186,7 @@ if (linkVizitator) {
   return;
 }
 
-      const raspuns = await fetch('http://localhost:8080/api/register', {
+      const raspuns = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username,email, parola })
@@ -225,7 +225,7 @@ if (forgotForm) {
   return;
 }
 
-    const raspuns = await fetch('http://localhost:8080/api/forgot', {
+    const raspuns = await fetch('/api/forgot', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, parolaNoua })
@@ -249,7 +249,7 @@ if (linkVizitator) {
   linkVizitator.addEventListener('click', async (e) => {
     e.preventDefault(); 
 
-    const raspuns = await fetch('http://localhost:8080/api/login-guest', {
+    const raspuns = await fetch('/api/login-guest', {
       method: 'POST'
     });
 

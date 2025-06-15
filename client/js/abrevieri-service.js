@@ -11,7 +11,7 @@ async function loadAbrevieri() {
   };
   
   try {
-    const raspuns = await fetch('http://localhost:8080/api/abrevieri', {
+    const raspuns = await fetch('/api/abrevieri', {
       method: 'GET',
       headers: headers
     });
@@ -39,7 +39,7 @@ async function addAbreviere(abreviereData) {
   }
   
   try {
-    const response = await fetch('http://localhost:8080/api/abrevieri', {
+    const response = await fetch('/api/abrevieri', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ async function updateAbreviere(id, abreviereData) {
   }
   
   try {
-    const response = await fetch(`http://localhost:8080/api/abrevieri/${id}`, {
+    const response = await fetch(`/api/abrevieri/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ async function deleteAbreviere(id) {
   }
   
   try {
-    const response = await fetch(`http://localhost:8080/api/abrevieri/${id}`, {
+    const response = await fetch(`/api/abrevieri/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': 'Bearer ' + token

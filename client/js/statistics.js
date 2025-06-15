@@ -17,7 +17,7 @@ async function loadStatistics() {
   if (!token) return;
   
   try {
-    const response = await fetch('http://localhost:8080/api/statistics', {
+    const response = await fetch('/api/statistics', {
       headers: { 'Authorization': 'Bearer ' + token }
     });
     
@@ -73,7 +73,7 @@ async function exportStats(format) {
     button.disabled = true;
     button.textContent = 'Se descarcă...';
     
-    const response = await fetch(`http://localhost:8080/api/statistics/export/${format}`, {
+    const response = await fetch(`/api/statistics/export/${format}`, {
       headers: { 'Authorization': 'Bearer ' + token }
     });
     

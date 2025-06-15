@@ -252,7 +252,7 @@
         e.preventDefault();
         userEmail = document.getElementById('userEmail').value;
         
-        fetch('http://localhost:8080/api/forgot-request', {
+        fetch('/api/forgot-request', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -281,7 +281,7 @@
         e.preventDefault();
         const verificationCode = document.getElementById('verificationCode').value;
         
-        fetch('http://localhost:8080/api/forgot-verify', {
+        fetch('/api/forgot-verify', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -320,7 +320,7 @@
           return;
         }
         
-        fetch('http://localhost:8080/api/forgot-reset', {
+        fetch('/api/forgot-reset', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

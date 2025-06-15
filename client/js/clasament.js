@@ -33,7 +33,7 @@ function createClassmentModal(htmlContent) {
 }
 
 async function fetchTop10() {
-  const response = await fetch('http://localhost:8080/api/abrevieri/top10', {
+  const response = await fetch('/api/abrevieri/top10', {
     headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` }
   });
   return response.json();
