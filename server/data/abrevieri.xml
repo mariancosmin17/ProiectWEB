@@ -11,4 +11,14 @@
       <date>2025-06-01</date>
     </glossdef>
   </glossentry>
+  <glossentry xml:id="2">
+    <glossterm>Info</glossterm>
+    <glossdef>
+      <para>Informatica</para>
+      <remark>Limba: Romana</remark>
+      <remark>Domeniu: Informatica</remark>
+      <remark>Autor: cosmin</remark>
+      <date>2025-06-15</date>
+    </glossdef>
+  </glossentry>
 </glossary>

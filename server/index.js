@@ -1,6 +1,8 @@
 require('./utils/cache-manager');
 const http = require('http');
 const url = require('url');
+const path = require('path');  
+const fs = require('fs'); 
 const { PORT } = require('./config');
 const { handleCorsOptions } = require('./utils/corsHeaders');
 const { handleAbrevieriRoutes } = require('./routes/abrevieri');
@@ -14,6 +16,29 @@ const { handleRSSRoutes } = require('./routes/rss');
 
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
+  
+  if (req.method === 'GET' && !parsedUrl.pathname.startsWith('/api/')) {
+    let filePath = parsedUrl.pathname;
+    
+    if (filePath === '/') {
+      filePath = '/html/login.html';
+    }
+    
+    const fullPath = path.join(__dirname, '../client', filePath);
+    
+    if (fs.existsSync(fullPath)) {
+      const ext = path.extname(fullPath);
+      const contentType = {
+        '.html': 'text/html; charset=utf-8',
+        '.css': 'text/css',
+        '.js': 'application/javascript'
+      }[ext] || 'text/plain';
+      
+      res.writeHead(200, { 'Content-Type': contentType });
+      res.end(fs.readFileSync(fullPath));
+      return;
+    }
+  }
   
   if (handleCorsOptions(req, res)) {
     return;
