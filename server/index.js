@@ -16,7 +16,17 @@ const { handleRSSRoutes } = require('./routes/rss');
 
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
-  
+
+    if (req.method === 'GET' && parsedUrl.pathname === '/health') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ 
+      status: 'OK', 
+      timestamp: new Date().toISOString(),
+      service: 'APlace API'
+    }));
+    return;
+  }
+
   if (req.method === 'GET' && !parsedUrl.pathname.startsWith('/api/')) {
     let filePath = parsedUrl.pathname;
     
