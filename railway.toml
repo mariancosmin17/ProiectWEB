@@ -2,4 +2,6 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "cd server && npm install --omit=dev && npm start"
+startCommand = "cd server && npm start"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
