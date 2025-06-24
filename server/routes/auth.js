@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../db');
 const { SALT_ROUNDS, SECRET_KEY } = require('../config');
+const { SENDGRID_API_KEY } = require('../secret');
 const { getCorsHeaders } = require('../utils/corsHeaders');
 const https = require('https');
 
@@ -103,7 +104,7 @@ function sendEmailWithCode(email, code) {
     path: "/v3/mail/send",
     method: "POST",
     headers: {
-      "Authorization": "Bearer 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",
+      "Authorization": `Bearer ${SENDGRID_API_KEY}`,
       "Content-Type": "application/json",
       "Content-Length": Buffer.byteLength(data) 
     }
