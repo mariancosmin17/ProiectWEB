@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEEE SRS - APlace System Requirements Specification</title>
+    <meta name="description" content="System Requirements Specification for APlace Abbreviations Management System">
+    <meta name="keywords" content="IEEE SRS, System Requirements, APlace, Abbreviations Management">
+    
+    <style>
+        /* Scholarly HTML Academic Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .scholarly-body {
+            font-family: 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #333;
+            background: white;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Academic Header */
+        .academic-header {
+            text-align: center;
+            border-bottom: 3px solid #0039a6;
+            padding-bottom: 30px;
+            margin-bottom: 50px;
+        }
+
+        .academic-header h1 {
+            font-size: 28px;
+            color: #0039a6;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .academic-header h2 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: normal;
+        }
+
+        .metadata {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .abstract {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 4px solid #0039a6;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .abstract h3 {
+            color: #0039a6;
+            margin-bottom: 10px;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: #f5f5f5;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 5px solid #0039a6;
+            margin-bottom: 50px;
+        }
+
+        .toc h3 {
+            color: #0039a6;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .toc ol {
+            counter-reset: section;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        .toc a {
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: #0039a6;
+            text-decoration: underline;
+        }
+
+        /* Main Content Sections */
+        .srs-section {
+            margin-bottom: 60px;
+            page-break-inside: avoid;
+        }
+
+        .srs-section h2 {
+            color: #0039a6;
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e1e5e9;
+        }
+
+        .srs-subsection {
+            margin: 30px 0 30px 20px;
+        }
+
+        .srs-subsection h3 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .srs-subsection h4 {
+            color: #555;
+            font-size: 16px;
+            margin: 20px 0 10px 0;
+        }
+
+        .srs-subsection p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        /* Requirements Tables */
+        .requirements-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .requirements-table th {
+            background: #0039a6;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .requirements-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .requirements-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Diagrams Section */
+        .diagram-container {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .diagram-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #0039a6;
+        }
+
+        .tab-button {
+            padding: 12px 20px;
+            background: #f5f5f5;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            background: #0039a6;
+            color: white;
+        }
+
+        .tab-button:hover:not(.active) {
+            background: #e1e5e9;
+        }
+
+        .diagram {
+            display: none;
+        }
+
+        .diagram.active {
+            display: block;
+        }
+
+        .diagram h4 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #0039a6;
+        }
+
+        /* Mermaid diagram styling */
+        .mermaid {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* Footer */
+        .academic-footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #e1e5e9;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Print styles */
+        @media print {
+            .scholarly-body {
+                max-width: none;
+                padding: 0;
+            }
+            
+            .diagram-tabs {
+                display: none;
+            }
+            
+            .diagram {
+                display: block !important;
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .scholarly-body {
+                padding: 20px 10px;
+            }
+            
+            .metadata {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .diagram-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab-button {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+        .context-diagram, .container-diagram, .component-diagram {
+    max-width: 800px;
+    margin: 30px auto;
+    text-align: center;
+}
+
+.diagram-row, .containers-row {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.user-box, .container-box, .component-box {
+    background: white;
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px;
+    min-width: 200px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.auth-user { border-color: #90EE90; background: #f0fff0; }
+.guest-user { border-color: #90EE90; background: #f0fff0; }
+.admin-user { border-color: #90EE90; background: #f0fff0; }
+
+.system-box {
+    background: #4169E1;
+    color: white;
+    border: 3px solid #333;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px auto;
+    max-width: 400px;
+}
+
+.external-box, .readers-box {
+    background: #D3D3D3;
+    border-color: #666;
+}
+
+.frontend-box, .frontend-simple { border-color: #87CEEB; background: #f0f8ff; }
+.backend-box { border-color: #4169E1; background: #e6f0ff; }
+.database-box, .database-simple { border-color: #32CD32; background: #f0fff0; }
+.rss-box { border-color: #FFD700; background: #fffacd; }
+.users-box { border-color: #D3D3D3; background: #f5f5f5; }
+
+.routes-box { border-color: #4169E1; background: #e6f0ff; }
+.middleware-box { border-color: #32CD32; background: #f0fff0; }
+.utils-box { border-color: #FFD700; background: #fffacd; }
+
+.user-icon, .system-icon, .external-icon, .container-icon, .component-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.user-title, .system-title, .external-title, .container-title, .component-title {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.user-desc, .system-desc, .external-desc, .container-desc, .component-desc {
+    font-size: 12px;
+    line-height: 1.3;
+    color: #555;
+}
+
+.system-desc { color: #fff; }
+
+.arrows-down, .arrow-down, .arrow-right {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 15px 0;
+}
+
+.arrow-down.small {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.system-boundary, .backend-boundary {
+    border: 2px dashed #0039a6;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+    background: #f8f9ff;
+}
+
+.boundary-title {
+    font-weight: bold;
+    color: #0039a6;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.external-container, .component-container {
+    margin: 20px 0;
+}
+
+.components-flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .diagram-row, .containers-row {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .user-box, .container-box, .component-box {
+        min-width: 250px;
+    }
+    
+    .arrow-right {
+        transform: rotate(90deg);
+        margin: 0;
+    }
+}
+    </style>
+</head>
+
+<body class="scholarly-body">
+    <!-- Antet Academic -->
+    <header class="academic-header">
+        <h1>Specificația Cerințelor de Sistem</h1>
+        <h2>APlace - Sistem de Management al Abrevierilor</h2>
+        <div class="metadata">
+            <div><strong>Versiune document:</strong> 1.0</div>
+            <div><strong>Data:</strong> <span id="currentDate"></span></div>
+            <div><strong>Stare:</strong> Final</div>
+        </div>
+        <div class="metadata">
+            <div><strong>Autori:</strong> Năstasa Vasile Vlad, Marian Cosmin</div>
+        </div>
+        <div class="abstract">
+            <h3>Rezumat</h3>
+            <p>
+                Acest document specifică cerințele de sistem pentru APlace, o platformă web modernă pentru gestionarea abrevierilor. Aplicația oferă funcționalități de creare, administrare și partajare a abrevierilor, inclusiv statistici în timp real, export de date și generare de fluxuri RSS. Specificația respectă standardul IEEE 830-1998 pentru Specificațiile Cerințelor Software.
+            </p>
+        </div>
+    </header>
+    <!-- Cuprins -->
+    <nav class="toc">
+        <h3>Cuprins</h3>
+        <ol>
+            <li><a href="#intro">1. Introducere</a>
+                <ol>
+                    <li><a href="#purpose">1.1 Scop</a></li>
+                    <li><a href="#scope">1.2 Domeniu de aplicare</a></li>
+                    <li><a href="#definitions">1.3 Definiții, acronime și abrevieri</a></li>
+                    <li><a href="#references">1.4 Referințe</a></li>
+                    <li><a href="#overview">1.5 Prezentare generală</a></li>
+                </ol>
+            </li>
+            <li><a href="#overall">2. Descriere generală</a>
+                <ol>
+                    <li><a href="#product-perspective">2.1 Perspectiva produsului</a></li>
+                    <li><a href="#product-functions">2.2 Funcționalitățile produsului</a></li>
+                    <li><a href="#user-characteristics">2.3 Caracteristici utilizatori</a></li>
+                    <li><a href="#constraints">2.4 Constrângeri</a></li>
+                    <li><a href="#assumptions">2.5 Presupuneri și dependențe</a></li>
+                </ol>
+            </li>
+            <li><a href="#requirements">3. Cerințe specifice</a>
+                <ol>
+                    <li><a href="#functional-req">3.1 Cerințe funcționale</a></li>
+                    <li><a href="#performance-req">3.2 Cerințe de performanță</a></li>
+                    <li><a href="#design-constraints">3.3 Constrângeri de proiectare</a></li>
+                    <li><a href="#system-attributes">3.4 Atributele sistemului software</a></li>
+                </ol>
+            </li>
+            <li><a href="#architecture">4. Arhitectura sistemului</a>
+                <ol>
+                    <li><a href="#c4-diagrams">4.1 Diagrame arhitectură C4</a></li>
+                    <li><a href="#development-stages">4.2 Etape dezvoltare</a></li>
+                </ol>
+            </li>
+        </ol>
+    </nav>
+    <!-- Main Content -->
+    <main class="srs-content">
+
+<!-- Secțiunea 1: Introducere -->
+<section id="intro" class="srs-section">
+    <h2>1. Introducere</h2>
+    <div id="purpose" class="srs-subsection">
+        <h3>1.1 Scop</h3>
+        <p>
+            Scopul acestui document este de a specifica cerințele pentru sistemul de management al abrevierilor APlace. Sistemul este conceput pentru a oferi utilizatorilor o platformă completă pentru crearea, gestionarea și partajarea abrevierilor din diverse domenii și limbi.
+        </p>
+        <p>
+            Principalul obiectiv este centralizarea managementului abrevierilor, oferind funcționalități avansate precum statistici în timp real, vizualizare colaborativă, export de date și generare automată de fluxuri RSS pentru conținutul popular.
+        </p>
+    </div>
+    <div id="scope" class="srs-subsection">
+        <h3>1.2 Domeniu de aplicare</h3>
+        <p><strong>Sistemul APlace VA oferi:</strong></p>
+        <ul>
+            <li>Autentificare și autorizare cu control al accesului pe bază de roluri</li>
+            <li>Operațiuni CRUD complete pentru gestionarea abrevierilor</li>
+            <li>Căutare avansată și filtrare</li>
+            <li>Funcționalitate de export date în mai multe formate (HTML, Markdown)</li>
+            <li>Statistici în timp real și grafice interactive</li>
+            <li>Monitorizare vizualizări și sistem de clasament pe baza popularității</li>
+            <li>Generare de fluxuri RSS pentru cele mai vizualizate abrevieri</li>
+            <li>Interfață web responsivă pentru desktop și mobil</li>
+        </ul>
+        <p><strong>Sistemul APlace NU VA oferi:</strong></p>
+        <ul>
+            <li>Gestionarea de imagini sau conținut multimedia</li>
+            <li>Servicii de notificare prin email</li>
+            <li>Procesare de plăți</li>
+            <li>Funcționalități de chat sau mesagerie în timp real</li>
+            <li>Integrare cu rețele sociale terțe</li>
+        </ul>
+    </div>
+    <div id="definitions" class="srs-subsection">
+        <h3>1.3 Definiții, acronime și abrevieri</h3>
+        <table class="requirements-table">
+            <thead>
+                <tr>
+                    <th>Termen</th>
+                    <th>Definiție</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Abreviere</td>
+                    <td>O formă prescurtată a unui cuvânt sau a unei expresii</td>
+                </tr>
+                <tr>
+                    <td>CRUD</td>
+                    <td>Create, Read, Update, Delete (Creare, Citire, Actualizare, Ștergere)</td>
+                </tr>
+                <tr>
+                    <td>JWT</td>
+                    <td>JSON Web Token – mecanism de autentificare</td>
+                </tr>
+                <tr>
+                    <td>RSS</td>
+                    <td>Really Simple Syndication – format pentru fluxuri web</td>
+                </tr>
+                <tr>
+                    <td>SRS</td>
+                    <td>Specificația Cerințelor de Sistem (System Requirements Specification)</td>
+                </tr>
+                <tr>
+                    <td>UI</td>
+                    <td>Interfață Utilizator (User Interface)</td>
+                </tr>
+                <tr>
+                    <td>API</td>
+                    <td>Interfață de Programare a Aplicațiilor (Application Programming Interface)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="references" class="srs-subsection">
+        <h3>1.4 Referințe</h3>
+        <ul>
+            <li>IEEE Std 830-1998, Ghid de bune practici pentru Specificațiile Cerințelor Software</li>
+            <li>Documentație Node.js – https://nodejs.org/docs/</li>
+            <li>Documentație SQLite – https://sqlite.org/docs.html</li>
+            <li>Documentație Chart.js – https://www.chartjs.org/docs/</li>
+            <li>Specificație HTML5 – https://html.spec.whatwg.org/</li>
+            <li>Specificație CSS3 – https://www.w3.org/Style/CSS/</li>
+        </ul>
+    </div>
+    <div id="overview" class="srs-subsection">
+        <h3>1.5 Prezentare generală</h3>
+        <p>
+            Acest document este structurat în patru secțiuni principale. Secțiunea 1 oferă o introducere a documentului și a sistemului. Secțiunea 2 prezintă descrierea generală a sistemului, inclusiv perspectiva, funcțiile, caracteristicile utilizatorilor, constrângerile și presupunerile.
+        </p>
+        <p>
+            Secțiunea 3 detaliază cerințele specifice – cerințe funcționale, de performanță, constrângeri de proiectare și atribute ale sistemului. Secțiunea 4 prezintă arhitectura sistemului folosind diagrame C4 și etapele de dezvoltare.
+        </p>
+    </div>
+</section>
+
+<!-- Secțiunea 2: Descriere generală -->
+<section id="overall" class="srs-section">
+    <h2>2. Descriere generală</h2>
+    <div id="product-perspective" class="srs-subsection">
+        <h3>2.1 Perspectiva produsului</h3>
+        <p>
+            APlace este o aplicație web independentă care funcționează fără dependențe externe. Sistemul urmează o arhitectură pe trei niveluri:
+        </p>
+        <ul>
+            <li><strong>Prezentare:</strong> Frontend HTML5, CSS3 și JavaScript</li>
+            <li><strong>Aplicație:</strong> Server Node.js cu API RESTful</li>
+            <li><strong>Date:</strong> Bază de date SQLite cu mecanisme de cache</li>
+        </ul>
+        <p>
+            Sistemul este proiectat să fie autonom și poate fi instalat pe orice mediu ce suportă Node.js.
+        </p>
+    </div>
+    <div id="product-functions" class="srs-subsection">
+        <h3>2.2 Funcționalitățile produsului</h3>
+        <p>Principalele funcționalități oferite de sistemul APlace sunt:</p>
+        <h4>Autentificare și autorizare</h4>
+        <ul>
+            <li>Înregistrare și autentificare utilizatori</li>
+            <li>Gestionare sesiune pe bază de JWT</li>
+            <li>Control al accesului pe roluri (Guest, Utilizator, Admin)</li>
+            <li>Funcție de recuperare parolă</li>
+        </ul>
+        <h4>Management abrevieri</h4>
+        <ul>
+            <li>Crearea de abrevieri cu metadate</li>
+            <li>Vizualizarea și căutarea abrevierilor existente</li>
+            <li>Editarea detaliilor unei abrevieri</li>
+            <li>Ștergerea abrevierilor (cu permisiuni corespunzătoare)</li>
+        </ul>
+        <h4>Căutare și descoperire</h4>
+        <ul>
+            <li>Căutare text în abrevieri și explicații</li>
+            <li>Filtrare după limbă, domeniu și autor</li>
+            <li>Paginare pentru rezultate mari</li>
+            <li>Sugestii în timp real la căutare</li>
+        </ul>
+        <h4>Analiză și statistici</h4>
+        <ul>
+            <li>Monitorizare vizualizări pentru măsurarea popularității</li>
+            <li>Grafice interactive și vizualizări statistice</li>
+            <li>Top 10 cele mai vizualizate abrevieri</li>
+            <li>Actualizare statistici în timp real</li>
+        </ul>
+        <h4>Export și partajare date</h4>
+        <ul>
+            <li>Export în format HTML</li>
+            <li>Export în format Markdown</li>
+            <li>Generare flux RSS pentru conținutul popular</li>
+            <li>Formatare print-friendly</li>
+        </ul>
+    </div>
+    <div id="user-characteristics" class="srs-subsection">
+        <h3>2.3 Caracteristici utilizatori</h3>
+        <h4>Utilizatori guest</h4>
+        <ul>
+            <li><strong>Acces:</strong> Doar vizualizare pentru abrevierile publice</li>
+            <li><strong>Competențe tehnice:</strong> Abilități de bază de navigare web</li>
+            <li><strong>Scop principal:</strong> Răsfoire și vizualizare abrevieri</li>
+        </ul>
+        <h4>Utilizatori autentificați</h4>
+        <ul>
+            <li><strong>Acces:</strong> Operațiuni CRUD complete pe propriile abrevieri</li>
+            <li><strong>Competențe tehnice:</strong> Cunoștințe informatice intermediare</li>
+            <li><strong>Scop principal:</strong> Gestionarea colecțiilor proprii de abrevieri</li>
+        </ul>
+        <h4>Administratori</h4>
+        <ul>
+            <li><strong>Acces:</strong> Administrare completă a sistemului</li>
+            <li><strong>Competențe tehnice:</strong> Cunoștințe tehnice avansate</li>
+            <li><strong>Scop principal:</strong> Management sistem și administrare utilizatori</li>
+        </ul>
+    </div>
+    <div id="constraints" class="srs-subsection">
+        <h3>2.4 Constrângeri</h3>
+        <h4>Constrângeri tehnice</h4>
+        <ul>
+            <li>Necesită browser modern cu JavaScript activat</li>
+            <li>Serverul rulează în mediu Node.js</li>
+            <li>Persistența datelor în SQLite</li>
+            <li>Conectivitate la rețea pentru funcții în timp real</li>
+        </ul>
+        <h4>Constrângeri operaționale</h4>
+        <ul>
+            <li>Arhitectură single-server</li>
+            <li>Stocare locală pe sistemul de fișiere</li>
+            <li>Disponibilitate port 8080 pentru server web</li>
+        </ul>
+        <h4>Constrângeri legislative</h4>
+        <ul>
+            <li>Respectarea standardelor de accesibilitate web</li>
+            <li>Respectarea normelor de confidențialitate și protecție a datelor</li>
+            <li>Respectarea licențierii open-source</li>
+        </ul>
+    </div>
+    <div id="assumptions" class="srs-subsection">
+        <h3>2.5 Presupuneri și dependențe</h3>
+        <h4>Presupuneri</h4>
+        <ul>
+            <li>Utilizatorii au cunoștințe de bază privind utilizarea aplicațiilor web</li>
+            <li>Conexiune stabilă la internet pentru performanță optimă</li>
+            <li>Browser modern cu suport HTML5 și CSS3</li>
+            <li>JavaScript activat în browser</li>
+        </ul>
+        <h4>Dependențe</h4>
+        <ul>
+            <li>Node.js (versiunea 16 sau mai nouă)</li>
+            <li>Motorul de baze de date SQLite</li>
+            <li>Librăria Chart.js pentru vizualizări</li>
+            <li>Librăria Mermaid.js pentru generare diagrame</li>
+        </ul>
+    </div>
+</section>
+
+
+        <!-- Secțiunea 3: Cerințe specifice -->
+<section id="requirements" class="srs-section">
+    <h2>3. Cerințe specifice</h2>
+    <div id="functional-req" class="srs-subsection">
+        <h3>3.1 Cerințe funcționale</h3>
+        <table class="requirements-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cerință</th>
+                    <th>Prioritate</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>FR-1</td>
+                    <td>Sistemul va permite înregistrarea de noi conturi de utilizator</td>
+                    <td>Ridicată</td>
+                    <td>✅ Implementat</td>
+                </tr>
+                <tr>
+                    <td>FR-2</td>
+                    <td>Sistemul va autentifica utilizatorii folosind nume de utilizator și parolă</td>
+                    <td>Ridicată</td>
+                    <td>✅ Implementat</td>
+                </tr>
+                <tr>
+                    <td>FR-3</td>
+                    <td>Sistemul va permite utilizatorilor autentificați să creeze abrevieri</td>
+                    <td>Ridicată</td>
+                    <td>✅ Implementat</td>
+                </tr>
+                <tr>
+                    <td>FR-4</td>
+                    <td>Sistemul va permite căutarea abrevierilor după text</td>
+                    <td>Ridicată</td>
+                    <td>✅ Implementat</td>
+                </tr>
+                <tr>
+                    <td>FR-5</td>
+                    <td>Sistemul va permite filtrarea după limbă și domeniu</td>
+                    <td>Medie</td>
+                    <td>✅ Implementat</td>
+                </tr>
+                <tr>
+                    <td>FR-6</td>
+                    <td>Sistemul va monitoriza numărul de vizualizări pentru fiecare abreviere</td>
+                    <td>Medie</td>
+                    <td>✅ Implementat</td>
+                </tr>
+                <tr>
+                    <td>FR-7</td>
+                    <td>Sistemul va genera statistici interactive</td>
+                    <td>Medie</td>
+                    <td>✅ Implementat</td>
+                </tr>
+                <tr>
+                    <td>FR-8</td>
+                    <td>Sistemul va permite exportul datelor în format HTML</td>
+                    <td>Scăzută</td>
+                    <td>✅ Implementat</td>
+                </tr>
+                <tr>
+                    <td>FR-9</td>
+                    <td>Sistemul va permite exportul datelor în format Markdown</td>
+                    <td>Scăzută</td>
+                    <td>✅ Implementat</td>
+                </tr>
+                <tr>
+                    <td>FR-10</td>
+                    <td>Sistemul va genera fluxuri RSS pentru conținutul popular</td>
+                    <td>Scăzută</td>
+                    <td>✅ Implementat</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="performance-req" class="srs-subsection">
+        <h3>3.2 Cerințe de performanță</h3>
+        <h4>Cerințe de timp de răspuns</h4>
+        <ul>
+            <li>Timpul de încărcare al paginilor nu va depăși 3 secunde în condiții normale</li>
+            <li>Operațiile CRUD se vor finaliza în maxim 2 secunde</li>
+            <li>Căutările vor returna rezultate în maxim 1 secundă</li>
+            <li>Operațiile de export vor fi finalizate în maxim 10 secunde</li>
+        </ul>
+        <h4>Cerințe de debit</h4>
+        <ul>
+            <li>Sistemul va suporta minim 10 utilizatori concurenți</li>
+            <li>Fiecare cont poate avea până la 100 de abrevieri</li>
+            <li>Sistemul va procesa 50 de cereri de căutare pe minut</li>
+        </ul>
+        <h4>Cerințe de disponibilitate</h4>
+        <ul>
+            <li>Sistemul va asigura o disponibilitate de 99% în timpul programului de lucru</li>
+            <li>Ferestrele planificate de mentenanță nu vor depăși 2 ore</li>
+        </ul>
+    </div>
+    <div id="design-constraints" class="srs-subsection">
+        <h3>3.3 Constrângeri de proiectare</h3>
+        <h4>Constrângeri tehnologice</h4>
+        <ul>
+            <li>Frontend-ul va fi implementat folosind HTML5, CSS3 și JavaScript simplu</li>
+            <li>Backend-ul va fi implementat în Node.js</li>
+            <li>Baza de date va folosi SQLite pentru persistența datelor</li>
+            <li>Nu se vor folosi baze de date externe</li>
+        </ul>
+        <h4>Constrângeri de interfață</h4>
+        <ul>
+            <li>Interfața va fi responsivă și compatibilă cu dispozitive mobile</li>
+            <li>Sistemul va funcționa pe browserele Chrome, Firefox, Safari și Edge</li>
+            <li>Rezoluția minimă suportată va fi de 320px lățime</li>
+        </ul>
+    </div>
+    <div id="system-attributes" class="srs-subsection">
+        <h3>3.4 Atributele sistemului software</h3>
+        <h4>Securitate</h4>
+        <ul>
+            <li>Parolele utilizatorilor vor fi criptate cu bcrypt</li>
+            <li>Gestionarea sesiunilor se va face prin JWT</li>
+            <li>Validarea inputului va preveni atacurile de tip SQL injection</li>
+            <li>Se va implementa protecție împotriva atacurilor XSS</li>
+        </ul>
+        <h4>Fiabilitate</h4>
+        <ul>
+            <li>Integritatea datelor va fi asigurată prin managementul tranzacțiilor</li>
+            <li>Sistemul va gestiona și înregistra erorile într-un mod grațios</li>
+            <li>Vor exista mecanisme automate de backup</li>
+        </ul>
+        <h4>Ușurință în utilizare</h4>
+        <ul>
+            <li>Interfața va urma principii moderne de design web</li>
+            <li>Navigarea va fi intuitivă și consecventă</li>
+            <li>Mesajele de eroare vor fi clare și utile</li>
+            <li>Sistemul va furniza feedback vizibil la orice acțiune</li>
+        </ul>
+        <h4>Mentenenabilitate</h4>
+        <ul>
+            <li>Codul va respecta principiile de arhitectură modulară</li>
+            <li>Documentația va fi menținută pentru toate componentele sistemului</li>
+            <li>Logurile vor facilita depanarea și monitorizarea sistemului</li>
+        </ul>
+    </div>
+</section>
+
+        <section id="architecture" class="srs-section">
+    <h2>4. Arhitectura sistemului</h2>
+    
+    <div id="c4-diagrams" class="srs-subsection">
+        <h3>4.1 Diagrame C4 de arhitectură</h3>
+        <p>
+            Următoarele diagrame C4 ilustrează arhitectura sistemului la niveluri diferite de abstractizare, de la contextul general al sistemului la interacțiuni detaliate între componente.
+        </p>
+        
+        <div class="diagram-container">
+            <div class="diagram-tabs">
+                <button class="tab-button active" onclick="showDiagram('context')">Context (Nivel 1)</button>
+                <button class="tab-button" onclick="showDiagram('container')">Containere (Nivel 2)</button>
+                <button class="tab-button" onclick="showDiagram('component')">Componente (Nivel 3)</button>
+            </div>
+
+            <!-- Diagrama de context -->
+            <div id="context" class="diagram active">
+                <h4>Diagrama de context a sistemului</h4>
+                <p>Afișează limitele sistemului și entitățile externe care interacționează cu APlace.</p>
+                <div class="context-diagram">
+                    <div class="diagram-row">
+                        <div class="user-box auth-user">
+                            <div class="user-icon">👤</div>
+                            <div class="user-title">Utilizator autentificat</div>
+                            <div class="user-desc">Gestionează abrevieri personale<br>Vizualizează statistici, exportă date</div>
+                        </div>
+                        <div class="user-box guest-user">
+                            <div class="user-icon">👤</div>
+                            <div class="user-title">Utilizator guest</div>
+                            <div class="user-desc">Vizualizează abrevieri publice<br>și statistici</div>
+                        </div>
+                        <div class="user-box admin-user">
+                            <div class="user-icon">👤</div>
+                            <div class="user-title">Administrator</div>
+                            <div class="user-desc">Administrare completă sistem<br>și utilizatori</div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrows-down">↓ ↓ ↓</div>
+                    
+                    <div class="system-box">
+                        <div class="system-icon">🏢</div>
+                        <div class="system-title">Sistemul APlace</div>
+                        <div class="system-desc">Platformă de management abrevieri<br>Monitorizare în timp real, statistici, fluxuri RSS</div>
+                    </div>
+                    
+                    <div class="arrow-down">↓</div>
+                    
+                    <div class="external-box">
+                        <div class="external-icon">📡</div>
+                        <div class="external-title">Cititoare RSS</div>
+                        <div class="external-desc">Consumă fluxuri RSS cu<br>top 10 abrevieri populare</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diagrama de containere -->
+            <div id="container" class="diagram">
+                <h4>Diagrama de containere</h4>
+                <p>Afișează containerele principale care formează sistemul APlace.</p>
+                <div class="container-diagram">
+                    <div class="external-container">
+                        <div class="container-box users-box">
+                            <div class="container-icon">👥</div>
+                            <div class="container-title">Utilizatori</div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow-down">↓</div>
+                    
+                    <div class="system-boundary">
+                        <div class="boundary-title">Sistemul APlace</div>
+                        <div class="containers-row">
+                            <div class="container-box frontend-box">
+                                <div class="container-icon">📱</div>
+                                <div class="container-title">Aplicație Frontend</div>
+                                <div class="container-desc">HTML, CSS, JavaScript<br>Autentificare, Dashboard, Management</div>
+                            </div>
+                            <div class="arrow-right">→</div>
+                            <div class="container-box backend-box">
+                                <div class="container-icon">⚙️</div>
+                                <div class="container-title">Backend API</div>
+                                <div class="container-desc">Server Node.js<br>Autentificare, CRUD, Statistici</div>
+                            </div>
+                        </div>
+                        <div class="containers-row">
+                            <div class="container-box database-box">
+                                <div class="container-icon">💾</div>
+                                <div class="container-title">Bază de date SQLite</div>
+                                <div class="container-desc">Utilizatori, Abrevieri<br>Loguri sincronizare, vizualizări</div>
+                            </div>
+                            <div class="container-box rss-box">
+                                <div class="container-icon">📄</div>
+                                <div class="container-title">Flux RSS</div>
+                                <div class="container-desc">Format XML cu<br>top 10 abrevieri</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow-down">↓</div>
+                    
+                    <div class="external-container">
+                        <div class="container-box readers-box">
+                            <div class="container-icon">📡</div>
+                            <div class="container-title">Cititoare RSS</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diagrama de componente -->
+            <div id="component" class="diagram">
+                <h4>Diagrama de componente</h4>
+                <p>Afișează componentele interne ale containerului Backend API.</p>
+                <div class="component-diagram">
+                    <div class="component-container">
+                        <div class="container-box frontend-simple">
+                            <div class="container-icon">📱</div>
+                            <div class="container-title">Aplicație Frontend</div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow-down">↓ Cereri HTTP</div>
+                    
+                    <div class="backend-boundary">
+                        <div class="boundary-title">Componente API Backend</div>
+                        <div class="components-flow">
+                            <div class="component-box routes-box">
+                                <div class="component-icon">🛣️</div>
+                                <div class="component-title">Strat Rute</div>
+                                <div class="component-desc">abrevieri.js, auth.js<br>export.js, statistics.js</div>
+                            </div>
+                            <div class="arrow-down small">↓</div>
+                            <div class="component-box middleware-box">
+                                <div class="component-icon">🔒</div>
+                                <div class="component-title">Middleware</div>
+                                <div class="component-desc">Autentificare<br>Anteturi CORS</div>
+                            </div>
+                            <div class="arrow-down small">↓</div>
+                            <div class="component-box utils-box">
+                                <div class="component-icon">🔧</div>
+                                <div class="component-title">Strat Utilitare</div>
+                                <div class="component-desc">cache-manager.js<br>sync-manager.js<br>rss-generator.js</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow-down">↓ Interogări bază de date</div>
+                    
+                    <div class="component-container">
+                        <div class="container-box database-simple">
+                            <div class="container-icon">💾</div>
+                            <div class="container-title">Bază de date SQLite</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="development-stages" class="srs-subsection">
+        <h3>4.2 Etapele dezvoltării</h3>
+        <p>
+            Sistemul APlace a fost dezvoltat printr-o abordare sistematică, urmând principii agile și implementare incrementală a funcționalităților.
+        </p>
+        
+        <h4>✅ Etapa 1: Setup fundație (finalizată)</h4>
+        <ul>
+            <li><strong>Infrastructură:</strong> Configurare server Node.js cu rutare Express-like</li>
+            <li><strong>Bază de date:</strong> Proiectare și implementare schemă SQLite</li>
+            <li><strong>Autentificare:</strong> Sistem JWT-based pentru autentificare</li>
+            <li><strong>CRUD de bază:</strong> Operații principale pentru abrevieri</li>
+            <li><strong>Structură frontend:</strong> Șabloane HTML și stilizare CSS de bază</li>
+        </ul>
+
+        <h4>✅ Etapa 2: Funcționalități de bază (finalizată)</h4>
+        <ul>
+            <li><strong>Interfață utilizator:</strong> Dashboard responsiv și interfață de management</li>
+            <li><strong>Căutare & filtrare:</strong> Căutare avansată cu filtre multiple</li>
+            <li><strong>Export date:</strong> Export în format HTML și Markdown</li>
+            <li><strong>Statistici:</strong> Analytics de bază cu Chart.js</li>
+            <li><strong>Roluri utilizator:</strong> Guest, Utilizator, Admin</li>
+        </ul>
+
+        <h4>✅ Etapa 3: Funcționalități avansate (finalizată)</h4>
+        <ul>
+            <li><strong>Monitorizare vizualizări:</strong> Sistem de popularitate în timp real</li>
+            <li><strong>Top abrevieri:</strong> Top 10 dinamic pentru abrevierile vizualizate</li>
+            <li><strong>Integrare RSS:</strong> Generare automată de fluxuri RSS</li>
+            <li><strong>Modale interactive:</strong> Vizualizări detaliate pentru UX îmbunătățit</li>
+            <li><strong>Actualizări live:</strong> Statistici și clasament cu refresh automat</li>
+        </ul>
+
+        <h4>✅ Etapa 4: Producție și optimizare (finalizată)</h4>
+        <ul>
+            <li><strong>Mașină virtuală:</strong> Deploy pe VM cu Ubuntu</li>
+            <li><strong>Servire statică:</strong> Integrare fișiere statice</li>
+            <li><strong>Configurare port:</strong> Acces rețea cu port forwarding</li>
+            <li><strong>Optimizare performanță:</strong> Cache la nivel de DB și mecanisme de sincronizare</li>
+            <li><strong>Documentație completă:</strong> Sistem complet documentat</li>
+        </ul>
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 30px;">
+            <h4>🎯 Rezumat implementare</h4>
+            <p>
+                <strong>Durată dezvoltare:</strong> 4 etape finalizate<br>
+                <strong>Arhitectură:</strong> Trei niveluri, RESTful API<br>
+                <strong>Capacitate date:</strong> Suport nelimitat pentru abrevieri<br>
+                <strong>Capacitate utilizatori:</strong> Multi-utilizator, control pe roluri<br>
+                <strong>Status implementare:</strong> Gata de producție pe infrastructură VM
+            </p>
+        </div>
+    </div>
+</section>
+
+
+    </main>
+
+    <!-- Academic Footer -->
+    <footer class="academic-footer">
+        <p>
+            © 2025 APlace Project - System Requirements Specification<br>
+            Document prepared according to IEEE 830-1998 standard<br>
+            <em>This document is part of the APlace Abbreviations Management System</em>
+        </p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+       
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ro-RO');
+
+        
+        document.querySelectorAll('.toc a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        
+        function showDiagram(diagramId) {
+            
+            const diagrams = document.querySelectorAll('.diagram');
+            diagrams.forEach(d => d.classList.remove('active'));
+            
+            
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(b => b.classList.remove('active'));
+            
+            
+            document.getElementById(diagramId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        
+        function highlightCurrentSection() {
+            const sections = document.querySelectorAll('.srs-section');
+            const tocLinks = document.querySelectorAll('.toc a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const scrollPos = window.scrollY + 100; // Offset for header
+                
+                if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                    currentSection = section.id;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('current');
+                if (link.getAttribute('href') === '#' + currentSection) {
+                    link.classList.add('current');
+                }
+            });
+        }
+
+                window.addEventListener('scroll', highlightCurrentSection);
+        
+        
+        window.addEventListener('beforeprint', function() {
+            document.querySelectorAll('.diagram').forEach(d => {
+                d.style.display = 'block';
+                d.style.pageBreakInside = 'avoid';
+            });
+        });
+
+        window.addEventListener('afterprint', function() {
+            document.querySelectorAll('.diagram').forEach((d, index) => {
+                if (index === 0) {
+                    d.style.display = 'block';
+                } else {
+                    d.style.display = 'none';
+                }
+            });
+            
+            const activeTab = document.querySelector('.tab-button.active');
+            if (activeTab) {
+                activeTab.click();
+            }
+        });
+
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            highlightCurrentSection();
+            mermaid.init();
+        });
+    </script>
+
+    <style>
+        /* Additional TOC highlighting */
+        .toc a.current {
+            color: #0039a6;
+            font-weight: bold;
+        }
+        
+        /* Enhance print styling */
+        @media print {
+            .diagram-tabs {
+                display: none !important;
+            }
+            
+            .diagram {
+                display: block !important;
+                page-break-before: auto;
+                page-break-after: auto;
+                page-break-inside: avoid;
+            }
+            
+            .srs-section {
+                page-break-inside: avoid;
+            }
+            
+            .academic-header {
+                page-break-after: avoid;
+            }
+            
+            .toc {
+                page-break-after: always;
+            }
+        }
+    </style>
+</body>
+</html>
