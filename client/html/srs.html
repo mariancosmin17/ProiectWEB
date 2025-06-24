@@ -388,6 +388,36 @@
         margin: 0;
     }
 }
+
+        .toc a.current {
+            color: #0039a6;
+            font-weight: bold;
+        }
+        
+        @media print {
+            .diagram-tabs {
+                display: none !important;
+            }
+            
+            .diagram {
+                display: block !important;
+                page-break-before: auto;
+                page-break-after: auto;
+                page-break-inside: avoid;
+            }
+            
+            .srs-section {
+                page-break-inside: avoid;
+            }
+            
+            .academic-header {
+                page-break-after: avoid;
+            }
+            
+            .toc {
+                page-break-after: always;
+            }
+        }
     </style>
 </head>
 
@@ -1123,36 +1153,5 @@
         });
     </script>
 
-    <style>
-        .toc a.current {
-            color: #0039a6;
-            font-weight: bold;
-        }
-        
-        @media print {
-            .diagram-tabs {
-                display: none !important;
-            }
-            
-            .diagram {
-                display: block !important;
-                page-break-before: auto;
-                page-break-after: auto;
-                page-break-inside: avoid;
-            }
-            
-            .srs-section {
-                page-break-inside: avoid;
-            }
-            
-            .academic-header {
-                page-break-after: avoid;
-            }
-            
-            .toc {
-                page-break-after: always;
-            }
-        }
-    </style>
 </body>
 </html>
