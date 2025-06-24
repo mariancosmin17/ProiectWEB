@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../db');
 const { SALT_ROUNDS, SECRET_KEY } = require('../config');
-const { SENDGRID_API_KEY } = require('../secret');
 const { getCorsHeaders } = require('../utils/corsHeaders');
 const https = require('https');
 
@@ -99,12 +98,13 @@ function sendEmailWithCode(email, code) {
     content: [{ type: "text/plain", value: `Codul tău de verificare este: ${code}` }]
   });
   
+  const apiKey = process.env.SENDGRID_API_KEY;
   const options = {
     hostname: "api.sendgrid.com",
     path: "/v3/mail/send",
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${SENDGRID_API_KEY}`,
+      "Authorization": `Bearer ${apiKey}`,
       "Content-Type": "application/json",
       "Content-Length": Buffer.byteLength(data) 
     }
