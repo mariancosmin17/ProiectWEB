@@ -17,7 +17,6 @@ body {
    2. STRUCTURA PRINCIPALĂ A PAGINII
 ======================================== */
 
-/* Container principal care ține totul */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
@@ -34,7 +33,6 @@ body {
   padding: 20px;
 }
 
-/* Header-ul din sidebar cu titlul aplicației */
 .sidebar-header {
   text-align: center;
   margin-bottom: 40px;
@@ -48,7 +46,6 @@ body {
   letter-spacing: 2px;
 }
 
-/* Meniul de navigare */
 .nav-menu ul {
   list-style: none;
 }
@@ -107,7 +104,6 @@ body {
   border: 1px solid #e1e5e9;
 }
 
-/* Secțiunea de întâmpinare */
 .welcome-section {
   flex: 1;
 }
@@ -123,7 +119,6 @@ body {
   font-size: 16px;
 }
 
-/* Containerul pentru butoanele de autentificare */
 #auth-buttons {
   display: flex;
   gap: 10px;

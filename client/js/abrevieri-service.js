@@ -34,7 +34,7 @@ async function addAbreviere(abreviereData) {
   const token = localStorage.getItem('jwt');
   if (!authUtils.isValidToken(token)) {
     localStorage.removeItem('jwt');
-    window.location.href = '../html/slogin.html';
+    window.location.href = '../html/login.html';
     return { succes: false, mesaj: 'Token invalid' };
   }
   

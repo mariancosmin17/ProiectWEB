@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // Încărcare date profil
   try {
     const res = await fetch(`/api/utilizatori/${parsed.id}`, {
       headers: { 'Authorization': 'Bearer ' + token }
@@ -45,7 +44,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('❌ Eroare la încărcare profil:', err);
   }
 
-  // Când selectezi o poză, se salvează direct
   profilePicture?.addEventListener('change', () => {
     const file = profilePicture.files[0];
     if (file) {
@@ -61,12 +59,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Butonul doar deschide selectorul de fișiere
   uploadBtn?.addEventListener('click', () => {
     profilePicture.click();
   });
 
-  // Activează textarea
   editAboutBtn?.addEventListener('click', () => {
     aboutTextarea.removeAttribute('readonly');
     aboutTextarea.focus();
@@ -80,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     alert("⚠️ Numărul de telefon trebuie să înceapă cu 07 și să conțină exact 10 cifre.");
     return;
   } else {
-    telefonInput.style.border = '1px solid #ccc'; // Reset stil
+    telefonInput.style.border = '1px solid #ccc'; 
   }
 
   const userData = {

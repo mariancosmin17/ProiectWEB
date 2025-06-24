@@ -35,7 +35,7 @@ function handleLogin(req, res) {
         if (rezultat) {
           const token = jwt.sign(
             {
-              id: user.id, // 🔑 Aici e cheia: trimitem id-ul utilizatorului în token
+              id: user.id, 
               username: user.username,
               role: user.rol || 'user'
             },
